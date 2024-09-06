@@ -3,6 +3,7 @@
         "source.fixAll.eslint": "always",
     },
     "cSpell.words": [
+        "ahooks",
         "immer"
     ]
 }
