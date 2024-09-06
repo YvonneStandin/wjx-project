@@ -11,8 +11,8 @@ function App() {
       <List1></List1>
       {/* <StateDemo></StateDemo> */}
       <p>
-        {x}
-        {y}
+        鼠标坐标：
+        {x}，{y}
       </p>
     </>
   )
