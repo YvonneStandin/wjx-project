@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react'
 import { produce } from 'immer'
 import styles from './list.module.scss'
-import QuestionCard from '../components/QuestionCard'
+import QuestionCard from '../../components/QuestionCard'
 
 const rawQuestionList = [
   {
