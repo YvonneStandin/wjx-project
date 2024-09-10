@@ -1,5 +1,6 @@
 import React, { FC, useState } from 'react'
 import { produce } from 'immer'
+import { useSearchParams } from 'react-router-dom'
 import styles from './list.module.scss'
 import QuestionCard from '../../components/QuestionCard'
 
@@ -39,6 +40,9 @@ const rawQuestionList = [
 ]
 
 const List: FC = () => {
+  const [searchParams] = useSearchParams()
+  console.log(searchParams.get('keyWord'))
+
   const [questionList, setQuestionList] = useState(rawQuestionList)
 
   //新增问卷
@@ -101,7 +105,7 @@ const List: FC = () => {
         })}
         <button onClick={addQuestion}>新增问卷</button>
       </div>
-      <div className={styles.footer}>footer</div>
+      <div className={styles.footer}>list page footer</div>
     </>
   )
 }
