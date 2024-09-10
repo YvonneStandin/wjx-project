@@ -1,0 +1,16 @@
+.container {
+    padding: 24px 0;
+    width: 1200px;
+    margin: 0 auto;//水平居中
+    display: flex;
+
+    .left {
+        width: 120px;
+        // flex: 1
+    }
+
+    .right {
+        flex: 1;
+        margin-left: 60px;
+    }
+}
