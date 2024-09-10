@@ -94,20 +94,21 @@ const List: FC = () => {
         <div className={styles.right}>搜索</div>
       </div>
       <div className={styles.content}>
-        {questionList.map(question => {
-          const { _id } = question
-          return (
-            <QuestionCard
-              key={_id}
-              {...question}
-              deleteQuestion={deleteQuestion}
-              publishQuestion={publishQuestion}
-            />
-          )
-        })}
+        {questionList.length > 0 &&
+          questionList.map(question => {
+            const { _id } = question
+            return (
+              <QuestionCard
+                key={_id}
+                {...question}
+                deleteQuestion={deleteQuestion}
+                publishQuestion={publishQuestion}
+              />
+            )
+          })}
         <button onClick={addQuestion}>新增问卷</button>
       </div>
-      <div className={styles.footer}>list page footer</div>
+      <div className={styles.footer}>loadMore...</div>
     </>
   )
 }
