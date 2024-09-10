@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { Button, Space, Divider } from 'antd'
 import { PlusOutlined, BarsOutlined, StarOutlined, RestOutlined } from '@ant-design/icons'
+import { LIST_PATHNAME, STAR_PATHNAME, TRASH_PATHNAME } from '../router'
 import sytles from './ManageLayout.module.scss'
 
 const ManageLayout: FC = () => {
@@ -17,31 +18,31 @@ const ManageLayout: FC = () => {
           </Button>
           <Divider></Divider>
           <Button
-            type={pathname.startsWith('/manage/list') ? 'default' : 'text'}
+            type={pathname.startsWith(LIST_PATHNAME) ? 'default' : 'text'}
             size="large"
             icon={<BarsOutlined />}
             onClick={() => {
-              nav('/manage/list')
+              nav(LIST_PATHNAME)
             }}
           >
             我的问卷
           </Button>
           <Button
-            type={pathname.startsWith('/manage/star') ? 'default' : 'text'}
+            type={pathname.startsWith(STAR_PATHNAME) ? 'default' : 'text'}
             size="large"
             icon={<StarOutlined />}
             onClick={() => {
-              nav('/manage/star')
+              nav(STAR_PATHNAME)
             }}
           >
             星标问卷
           </Button>
           <Button
-            type={pathname.startsWith('/manage/trash') ? 'default' : 'text'}
+            type={pathname.startsWith(TRASH_PATHNAME) ? 'default' : 'text'}
             size="large"
             icon={<RestOutlined />}
             onClick={() => {
-              nav('/manage/trash')
+              nav(TRASH_PATHNAME)
             }}
           >
             回收站
