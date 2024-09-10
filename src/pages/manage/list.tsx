@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react'
 import { produce } from 'immer'
 import { useSearchParams } from 'react-router-dom'
+import { useTitle } from 'ahooks'
 import styles from './list.module.scss'
 import QuestionCard from '../../components/QuestionCard'
 
@@ -40,6 +41,7 @@ const rawQuestionList = [
 ]
 
 const List: FC = () => {
+  useTitle('夸克奶酪问卷-我的问卷')
   const [searchParams] = useSearchParams()
   console.log(searchParams.get('keyWord'))
 
