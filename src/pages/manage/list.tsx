@@ -2,7 +2,8 @@ import React, { FC, useState } from 'react'
 import { produce } from 'immer'
 import { useSearchParams } from 'react-router-dom'
 import { useTitle } from 'ahooks'
-import styles from './list.module.scss'
+import { Typography } from 'antd'
+import styles from './common.module.scss'
 import QuestionCard from '../../components/QuestionCard'
 
 const rawQuestionList = [
@@ -45,24 +46,9 @@ const List: FC = () => {
   const [searchParams] = useSearchParams()
   console.log(searchParams.get('keyWord'))
 
-  const [questionList, setQuestionList] = useState(rawQuestionList)
+  const { Title } = Typography
 
-  //新增问卷
-  function addQuestion() {
-    const id = Math.random().toString().slice(3)
-    setQuestionList(
-      produce(draft => {
-        draft.push({
-          _id: id,
-          title: `问卷${id}`,
-          isPublished: false,
-          isStar: false,
-          answerCount: 0,
-          createAt: '12月28日 07:00',
-        })
-      })
-    )
-  }
+  const [questionList, setQuestionList] = useState(rawQuestionList)
 
   //删除问卷
   function deleteQuestion(id: string) {
@@ -89,7 +75,7 @@ const List: FC = () => {
     <>
       <div className={styles.header}>
         <div className={styles.left}>
-          <h3>夸克奶酪的问卷</h3>
+          <Title level={3}>夸克奶酪的问卷</Title>
         </div>
         <div className={styles.right}>搜索</div>
       </div>
@@ -106,7 +92,6 @@ const List: FC = () => {
               />
             )
           })}
-        <button onClick={addQuestion}>新增问卷</button>
       </div>
       <div className={styles.footer}>loadMore...</div>
     </>
