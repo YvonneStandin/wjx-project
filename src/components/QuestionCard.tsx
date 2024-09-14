@@ -8,7 +8,6 @@ import {
   StarOutlined,
   CopyOutlined,
   DeleteOutlined,
-  ExclamationCircleOutlined,
 } from '@ant-design/icons'
 import styles from './QuestionCard.module.scss'
 // import classNames from 'classnames'
@@ -29,18 +28,17 @@ const QuestionCard: FC<PropsType> = props => {
   const { _id, title, isPublished, isStar, createAt, answerCount, deleteQuestion } = props
 
   function del(id: string) {
-    Modal.confirm({
+    Modal.warning({
       title: '确认删除该问卷？',
-      icon: <ExclamationCircleOutlined />,
       onOk: () => {
         deleteQuestion(id)
-        message.open({ type: 'success', content: '删除成功' })
+        message.success('删除成功')
       },
     })
   }
 
   function duplicate() {
-    message.open({ type: 'success', content: '复制成功' })
+    message.success('复制成功')
   }
 
   // function pub(id: string) {
