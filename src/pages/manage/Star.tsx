@@ -63,7 +63,7 @@ const Star: FC = () => {
     <>
       <div className={styles.header}>
         <div className={styles.left}>
-          <Title level={3}>夸克奶酪的问卷</Title>
+          <Title level={3}>星标问卷</Title>
         </div>
         <div className={styles.right}>搜索</div>
       </div>
@@ -82,7 +82,7 @@ const Star: FC = () => {
             )
           })}
       </div>
-      <div className={styles.footer}>loadMore...</div>
+      <div className={styles.footer}>分页</div>
     </>
   )
 }
