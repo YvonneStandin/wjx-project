@@ -8,7 +8,8 @@ import styles from './Register.module.scss'
 const { Title } = Typography
 
 const Register: FC = () => {
-  function handleFinish(value: unknown) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function handleFinish(value: any) {
     console.log(value)
   }
 

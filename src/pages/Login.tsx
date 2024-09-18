@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Space, Typography, Form, Input, Button, Checkbox } from 'antd'
 import { UserAddOutlined } from '@ant-design/icons'
@@ -7,9 +7,43 @@ import styles from './Login.module.scss'
 
 const { Title } = Typography
 
+const USERNAME_KEY = 'USERNAME'
+const PASSWORD_KEY = 'PASSWORD'
+
+function rememberUser(username: string, password: string) {
+  localStorage.setItem(USERNAME_KEY, username)
+  localStorage.setItem(PASSWORD_KEY, password)
+}
+
+function deleteUserFromStorage() {
+  localStorage.removeItem(USERNAME_KEY)
+  localStorage.removeItem(PASSWORD_KEY)
+}
+
+function getUserInfoFromStorage() {
+  return {
+    username: localStorage.getItem(USERNAME_KEY),
+    password: localStorage.getItem(PASSWORD_KEY),
+  }
+}
+
 const Login: FC = () => {
-  function handleFinish(value: unknown) {
-    console.log(value)
+  const [form] = Form.useForm()
+
+  useEffect(() => {
+    const { username, password } = getUserInfoFromStorage()
+    form.setFieldsValue({ username, password })
+  }, [])
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  function handleFinish(values: any) {
+    console.log(values)
+    const { remember, username, password } = values || {}
+    if (remember) {
+      rememberUser(username, password)
+    } else {
+      deleteUserFromStorage()
+    }
   }
 
   return (
@@ -28,6 +62,7 @@ const Login: FC = () => {
           onFinish={handleFinish}
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 16 }}
+          form={form}
         >
           <Form.Item label="用户名" name="username">
             <Input></Input>
