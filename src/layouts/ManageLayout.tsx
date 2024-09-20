@@ -1,26 +1,23 @@
-import React, { FC, useState } from 'react'
+import React, { FC } from 'react'
 import { Outlet, useNavigate, useLocation } from 'react-router-dom'
 import { Button, Space, Divider, message } from 'antd'
 import { PlusOutlined, BarsOutlined, StarOutlined, RestOutlined } from '@ant-design/icons'
 import { LIST_PATHNAME, STAR_PATHNAME, TRASH_PATHNAME, EDIT_PATHNAME } from '../router'
+import { useRequest } from 'ahooks'
 import { createQuestionService } from '../services/question'
 import styles from './ManageLayout.module.scss'
 
 const ManageLayout: FC = () => {
-  const [loading, setLoading] = useState(false)
-
   const nav = useNavigate()
   const { pathname } = useLocation()
 
-  async function createQuestion() {
-    setLoading(true)
-    const data = await createQuestionService()
-    const { id } = data || {}
-    if (id) {
-      nav(`${EDIT_PATHNAME}${id}`)
+  const { loading, run: createQuestion } = useRequest(createQuestionService, {
+    manual: true,
+    onSuccess: result => {
+      nav(`${EDIT_PATHNAME}${result.id}`)
       message.success('创建成功！')
-    }
-  }
+    },
+  })
 
   return (
     <div className={styles.container}>

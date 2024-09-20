@@ -19,7 +19,7 @@ function useLoadQuestionData() {
   //   fn()
   // }, [])
 
-  //异步函数中执行接口调用，并返回接口数据
+  //异步函数中执行接口调用，并返回接口数据，getQuestionService符合格式，但因为有参数id，所有包装一下
   async function loadQuestion() {
     const data = await getQuestionService(id)
     return data
