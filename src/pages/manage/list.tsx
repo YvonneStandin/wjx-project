@@ -1,8 +1,9 @@
 import React, { FC } from 'react'
 // import { produce } from 'immer'
-import { useTitle, useRequest } from 'ahooks'
+import { useTitle } from 'ahooks'
 import { Typography, Spin } from 'antd'
-import { getQuestionListService } from '../../services/question'
+// import { getQuestionListService } from '../../services/question'
+import useLoadQuestionList from '../../hooks/useLoadQuestionList'
 import styles from './common.module.scss'
 import QuestionCard from '../../components/QuestionCard'
 import ListSearch from '../../components/ListSearch'
@@ -12,8 +13,7 @@ const List: FC = () => {
 
   const { Title } = Typography
 
-  //list直接使用，无需再useState
-  const { data = {}, loading } = useRequest(getQuestionListService)
+  const { data = {}, loading } = useLoadQuestionList()
   const { list: questionList = [] } = data
 
   //删除问卷
