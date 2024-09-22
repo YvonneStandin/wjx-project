@@ -1,51 +1,18 @@
 import React, { FC, useState } from 'react'
 import { useTitle } from 'ahooks'
-import { Typography, Empty, Table, Tag, Button, Space, Modal, message } from 'antd'
+import useLoadQuestionList from '../../hooks/useLoadQuestionList'
+import { Typography, Empty, Table, Tag, Button, Space, Modal, message, Spin } from 'antd'
 import ListSearch from '../../components/ListSearch'
 
 import styles from './common.module.scss'
 
-const rawQuestionList = [
-  {
-    _id: '1',
-    title: '问卷小黑',
-    isPublished: false,
-    isStar: false,
-    createAt: '4月19日 13:00',
-    answerCount: 5,
-  },
-  {
-    _id: '2',
-    title: '问卷小红',
-    isPublished: true,
-    isStar: true,
-    createAt: '6月01日 01:00',
-    answerCount: 9,
-  },
-  {
-    _id: '3',
-    title: '问卷奶酪',
-    isPublished: false,
-    isStar: false,
-    createAt: '4月19日 13:00',
-    answerCount: 0,
-  },
-  {
-    _id: '4',
-    title: '问卷夸克',
-    isPublished: false,
-    isStar: false,
-    createAt: '4月19日 13:00',
-    answerCount: 3,
-  },
-]
-
 const Trash: FC = () => {
   useTitle('夸克奶酪问卷-回收站')
-
   const { Title } = Typography
 
-  const [questionList, setQuestionList] = useState(rawQuestionList)
+  const { data = {}, loading } = useLoadQuestionList({ isDeleted: true })
+  const { list: questionList = [] } = data
+
   //多选框选中ids
   const [selectedIds, setSelectedIds] = useState<string[]>([])
 
@@ -58,7 +25,7 @@ const Trash: FC = () => {
         return isPublished ? <Tag color="green">已发布</Tag> : <Tag>未发布</Tag>
       },
     },
-    { title: '创建时间', dataIndex: 'createAt' },
+    { title: '创建时间', dataIndex: 'createdAt' },
     { title: '答卷数量', dataIndex: 'answerCount' },
   ]
 
@@ -69,17 +36,7 @@ const Trash: FC = () => {
       content: '删除以后不可以找回',
       onOk: () => {
         //发送删除请求，重新更换questionList
-        setQuestionList(
-          questionList.filter(item => {
-            let flag = true
-            selectedIds.forEach(i => {
-              if (i === item._id) {
-                flag = false
-              }
-            })
-            return flag
-          })
-        )
+
         message.success('删除成功')
       },
     })
@@ -102,7 +59,8 @@ const Trash: FC = () => {
         dataSource={questionList}
         columns={columns}
         pagination={false}
-        rowKey={q => q._id}
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        rowKey={(q: any) => q._id}
         rowSelection={{
           type: 'checkbox',
           onChange: selectedRowKeys => {
@@ -124,8 +82,13 @@ const Trash: FC = () => {
         </div>
       </div>
       <div className={styles.content}>
-        {questionList.length === 0 && <Empty description="暂无数据"></Empty>}
-        {questionList.length > 0 && TableElm}
+        {loading && (
+          <div className={styles.loading}>
+            <Spin></Spin>
+          </div>
+        )}
+        {!loading && questionList.length === 0 && <Empty description="暂无数据"></Empty>}
+        {!loading && questionList.length > 0 && TableElm}
       </div>
     </>
   )

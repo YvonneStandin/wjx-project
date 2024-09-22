@@ -1,64 +1,38 @@
-import React, { FC, useState } from 'react'
-import { produce } from 'immer'
+import React, { FC } from 'react'
 import { useTitle } from 'ahooks'
-import { Typography, Empty } from 'antd'
+import useLoadQuestionList from '../../hooks/useLoadQuestionList'
+import { Typography, Empty, Spin } from 'antd'
 import styles from './common.module.scss'
 import QuestionCard from '../../components/QuestionCard'
 import ListSearch from '../../components/ListSearch'
 
-const rawQuestionList = [
-  {
-    _id: '1',
-    title: '问卷小黑',
-    isPublished: false,
-    isStar: true,
-    createAt: '4月19日 13:00',
-    answerCount: 0,
-  },
-  {
-    _id: '2',
-    title: '问卷小红',
-    isPublished: true,
-    isStar: true,
-    createAt: '6月01日 009:00',
-    answerCount: 0,
-  },
-  {
-    _id: '3',
-    title: '问卷奶酪',
-    isPublished: false,
-    isStar: true,
-    createAt: '4月19日 13:00',
-    answerCount: 0,
-  },
-]
-
 const Star: FC = () => {
   useTitle('夸克奶酪问卷-星标问卷')
-
   const { Title } = Typography
-  const [questionList, setQuestionList] = useState(rawQuestionList)
+
+  const { data = {}, loading } = useLoadQuestionList({ isStar: true })
+  const { list: questionList = [] } = data
 
   //删除问卷
-  function deleteQuestion(id: string) {
-    setQuestionList(
-      produce(draft => {
-        draft.splice(
-          questionList.findIndex(item => item._id === id),
-          1
-        )
-      })
-    )
-  }
+  // function deleteQuestion(id: string) {
+  //   setQuestionList(
+  //     produce(draft => {
+  //       draft.splice(
+  //         questionList.findIndex(item => item._id === id),
+  //         1
+  //       )
+  //     })
+  //   )
+  // }
 
-  //发布问卷
-  function publishQuestion(id: string) {
-    setQuestionList(
-      produce(draft => {
-        draft[questionList.findIndex(item => item._id === id)].isPublished = true
-      })
-    )
-  }
+  // //发布问卷
+  // function publishQuestion(id: string) {
+  //   setQuestionList(
+  //     produce(draft => {
+  //       draft[questionList.findIndex(item => item._id === id)].isPublished = true
+  //     })
+  //   )
+  // }
 
   return (
     <>
@@ -71,16 +45,23 @@ const Star: FC = () => {
         </div>
       </div>
       <div className={styles.content}>
-        {questionList.length === 0 && <Empty description="暂无数据"></Empty>}
-        {questionList.length > 0 &&
-          questionList.map(question => {
+        {loading && (
+          <div className={styles.loading}>
+            <Spin></Spin>
+          </div>
+        )}
+        {!loading && questionList.length === 0 && <Empty description="暂无数据"></Empty>}
+        {!loading &&
+          questionList.length > 0 &&
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          questionList.map((question: any) => {
             const { _id } = question
             return (
               <QuestionCard
                 key={_id}
                 {...question}
-                deleteQuestion={deleteQuestion}
-                publishQuestion={publishQuestion}
+                // deleteQuestion={deleteQuestion}
+                // publishQuestion={publishQuestion}
               />
             )
           })}
