@@ -1,12 +1,12 @@
 import React, { ChangeEvent, FC, useState, useEffect } from 'react'
-import { useSearchParams, useLocation, useNavigate } from 'react-router-dom'
+import { useSearchParams } from 'react-router-dom'
 import { LIST_SEARCH_PARAM_KEY } from '../constant'
 import { Input } from 'antd'
 
 const { Search } = Input
 
 const ListSearch: FC = () => {
-  const [searchParams] = useSearchParams()
+  const [searchParams, setSearchParams] = useSearchParams()
   const [value, setValue] = useState('')
 
   //获取URL参数，并设置到input value，刷新带有关键字的地址时保证input内同步有值
@@ -15,15 +15,11 @@ const ListSearch: FC = () => {
     setValue(curVal)
   }, [])
 
-  const nav = useNavigate()
-  const { pathname } = useLocation()
   function handleSearch(value: string) {
-    searchParams.set(LIST_SEARCH_PARAM_KEY, value)
-    nav({
-      pathname,
-      search: searchParams.toString(),
-    })
+    // 不用考虑其他查询字段，不用nav跳转，setSearchParams更方便
+    setSearchParams({ [LIST_SEARCH_PARAM_KEY]: value })
   }
+
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     setValue(event.target.value)
   }
