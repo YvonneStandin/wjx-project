@@ -3,7 +3,7 @@ import { useTitle } from 'ahooks'
 import useLoadQuestionList from '../../hooks/useLoadQuestionList'
 import { Typography, Empty, Table, Tag, Button, Space, Modal, message, Spin } from 'antd'
 import ListSearch from '../../components/ListSearch'
-
+import ListPagination from '../../components/ListPagination'
 import styles from './common.module.scss'
 
 const Trash: FC = () => {
@@ -11,7 +11,7 @@ const Trash: FC = () => {
   const { Title } = Typography
 
   const { data = {}, loading } = useLoadQuestionList({ isDeleted: true })
-  const { list: questionList = [] } = data
+  const { list: questionList = [], total } = data
 
   //多选框选中ids
   const [selectedIds, setSelectedIds] = useState<string[]>([])
@@ -89,6 +89,9 @@ const Trash: FC = () => {
         )}
         {!loading && questionList.length === 0 && <Empty description="暂无数据"></Empty>}
         {!loading && questionList.length > 0 && TableElm}
+      </div>
+      <div className={styles.footer}>
+        {!loading && questionList.length > 0 && <ListPagination total={total}></ListPagination>}
       </div>
     </>
   )

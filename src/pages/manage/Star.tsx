@@ -2,16 +2,17 @@ import React, { FC } from 'react'
 import { useTitle } from 'ahooks'
 import useLoadQuestionList from '../../hooks/useLoadQuestionList'
 import { Typography, Empty, Spin } from 'antd'
-import styles from './common.module.scss'
 import QuestionCard from '../../components/QuestionCard'
 import ListSearch from '../../components/ListSearch'
+import ListPagination from '../../components/ListPagination'
+import styles from './common.module.scss'
 
 const Star: FC = () => {
   useTitle('夸克奶酪问卷-星标问卷')
   const { Title } = Typography
 
   const { data = {}, loading } = useLoadQuestionList({ isStar: true })
-  const { list: questionList = [] } = data
+  const { list: questionList = [], total = 0 } = data
 
   //删除问卷
   // function deleteQuestion(id: string) {
@@ -66,7 +67,9 @@ const Star: FC = () => {
             )
           })}
       </div>
-      <div className={styles.footer}>分页</div>
+      <div className={styles.footer}>
+        {!loading && questionList.length > 0 && <ListPagination total={total}></ListPagination>}
+      </div>
     </>
   )
 }

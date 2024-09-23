@@ -1,13 +1,11 @@
 import React, { ChangeEvent, FC, useState, useEffect } from 'react'
-import { useNavigate, useLocation, useSearchParams } from 'react-router-dom'
+import { useSearchParams, useLocation, useNavigate } from 'react-router-dom'
 import { LIST_SEARCH_PARAM_KEY } from '../constant'
 import { Input } from 'antd'
 
 const { Search } = Input
 
 const ListSearch: FC = () => {
-  const nav = useNavigate()
-  const { pathname } = useLocation()
   const [searchParams] = useSearchParams()
   const [value, setValue] = useState('')
 
@@ -17,10 +15,13 @@ const ListSearch: FC = () => {
     setValue(curVal)
   }, [])
 
+  const nav = useNavigate()
+  const { pathname } = useLocation()
   function handleSearch(value: string) {
+    searchParams.set(LIST_SEARCH_PARAM_KEY, value)
     nav({
       pathname,
-      search: `${LIST_SEARCH_PARAM_KEY}=${value}`,
+      search: searchParams.toString(),
     })
   }
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
