@@ -33,3 +33,14 @@ export async function getQuestionListService(
   })) as ResDataType
   return data
 }
+
+//修改问卷字段值
+export async function updateQuestionDataService(
+  id: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  updateQuestion: { [key: string]: any }
+): Promise<ResDataType> {
+  const url = `/api/question/${id}`
+  const data = (await axios.patch(url, updateQuestion)) as ResDataType
+  return data
+}
