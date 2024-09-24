@@ -8,7 +8,7 @@ import Home from '../pages/Home'
 import Login from '../pages/Login'
 import Register from '../pages/Register'
 import NotFound from '../pages/NotFound'
-import List from '../pages/manage/list'
+import MyList from '../pages/manage/list'
 import Star from '../pages/manage/Star'
 import Trash from '../pages/manage/Trash'
 import Edit from '../pages/question/Edit'
@@ -37,7 +37,7 @@ const router = createBrowserRouter([
         children: [
           {
             path: 'list',
-            element: <List></List>,
+            element: <MyList></MyList>,
           },
           {
             path: 'star',
