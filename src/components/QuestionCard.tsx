@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react'
 import { EDIT_PATHNAME, STAT_PATHNAME } from '../router'
 import { useNavigate, Link } from 'react-router-dom'
 import { useRequest } from 'ahooks'
-import { updateQuestionDataService } from '../services/question'
+import { updateQuestionDataService, duplicateQuestionService } from '../services/question'
 import { Space, Button, Divider, Tag, Popconfirm, Modal, message } from 'antd'
 import {
   EditOutlined,
@@ -40,9 +40,17 @@ const QuestionCard: FC<PropsType> = props => {
     })
   }
 
-  function duplicate() {
-    message.success('复制成功')
-  }
+  //复制问卷
+  const { loading: duplicateLoading, run: handleDuplicate } = useRequest(
+    () => duplicateQuestionService(_id),
+    {
+      manual: true,
+      onSuccess(res) {
+        message.success('复制成功')
+        nav(`${EDIT_PATHNAME}/${res.id}`)
+      },
+    }
+  )
 
   //更新star
   const { loading: starLoading, run: handleChangeStar } = useRequest(
@@ -71,7 +79,7 @@ const QuestionCard: FC<PropsType> = props => {
     <div key={_id} className={styles.container}>
       <div className={styles.title}>
         <div className={styles.left}>
-          <Link to={isPublished ? `${STAT_PATHNAME}${_id}` : `${EDIT_PATHNAME}${_id}`}>
+          <Link to={isPublished ? `${STAT_PATHNAME}/${_id}` : `${EDIT_PATHNAME}/${_id}`}>
             <Space>
               {isStarPrivate && <StarOutlined style={{ color: 'red' }} />}
               {title}
@@ -94,7 +102,7 @@ const QuestionCard: FC<PropsType> = props => {
               icon={<EditOutlined />}
               type="text"
               size="small"
-              onClick={() => nav(`${EDIT_PATHNAME}${_id}`)}
+              onClick={() => nav(`${EDIT_PATHNAME}/${_id}`)}
             >
               编辑问卷
             </Button>
@@ -102,7 +110,7 @@ const QuestionCard: FC<PropsType> = props => {
               icon={<LineChartOutlined />}
               type="text"
               size="small"
-              onClick={() => nav(`${STAT_PATHNAME}${_id}`)}
+              onClick={() => nav(`${STAT_PATHNAME}/${_id}`)}
               disabled={!isPublished}
             >
               数据统计{' '}
@@ -124,9 +132,9 @@ const QuestionCard: FC<PropsType> = props => {
               title="确定复制该问卷？"
               okText="确认"
               cancelText="取消"
-              onConfirm={duplicate}
+              onConfirm={handleDuplicate}
             >
-              <Button type="text" size="small" icon={<CopyOutlined />}>
+              <Button type="text" size="small" icon={<CopyOutlined />} loading={duplicateLoading}>
                 复制
               </Button>
             </Popconfirm>
