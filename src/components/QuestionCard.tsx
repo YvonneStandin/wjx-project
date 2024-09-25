@@ -27,15 +27,29 @@ type PropsType = {
 
 const QuestionCard: FC<PropsType> = props => {
   const nav = useNavigate()
-  const { _id, title, isPublished, isStar, createAt, answerCount, deleteQuestion } = props
+  const { _id, title, isPublished, isStar, createAt, answerCount } = props
   const [isStarPrivate, setIsStarPrivate] = useState(isStar)
+  const [isDeletedState, setIsDeletedState] = useState(false)
 
-  function del(id: string) {
+  //删除问卷
+  const { run: deleteQuestion, loading: deleteLoading } = useRequest(
+    async () => {
+      const data = await updateQuestionDataService(_id, { isDeleted: true })
+      return data
+    },
+    {
+      manual: true,
+      onSuccess() {
+        message.success('删除成功')
+        setIsDeletedState(true)
+      },
+    }
+  )
+  function handelDelete() {
     Modal.warning({
       title: '确认删除该问卷？',
       onOk: () => {
-        deleteQuestion(id)
-        message.success('删除成功')
+        deleteQuestion()
       },
     })
   }
@@ -64,17 +78,13 @@ const QuestionCard: FC<PropsType> = props => {
     }
   )
 
-  // function pub(id: string) {
-  //   publishQuestion(id)
-  // }
-
   // classnames结合条件判断，要有中括号[styles.published]，因为{a:100}属性就是"a"，{[a]:100}属性是a变量名的实际值
   // const itemClassNames = classNames(styles['list-item'], { [styles.published]: isPublished })
   // const itemClassNames = classNames({
   //   [styles['list-item']]: true,
   //   [styles.published]: isPublished,
   // })
-
+  if (isDeletedState) return null
   return (
     <div key={_id} className={styles.container}>
       <div className={styles.title}>
@@ -138,7 +148,13 @@ const QuestionCard: FC<PropsType> = props => {
                 复制
               </Button>
             </Popconfirm>
-            <Button type="text" size="small" icon={<DeleteOutlined />} onClick={() => del(_id)}>
+            <Button
+              type="text"
+              size="small"
+              icon={<DeleteOutlined />}
+              onClick={handelDelete}
+              loading={deleteLoading}
+            >
               删除
             </Button>
             {/* <button onClick={() => pub(_id)}>发布问卷</button> */}
