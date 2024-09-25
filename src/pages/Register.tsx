@@ -1,5 +1,8 @@
 import React, { FC } from 'react'
-import { Typography, Space, Form, Input, Button } from 'antd'
+import { useNavigate } from 'react-router-dom'
+import { useRequest } from 'ahooks'
+import { registerService } from '../services/user'
+import { Typography, Space, Form, Input, Button, message } from 'antd'
 import { UserAddOutlined } from '@ant-design/icons'
 import { Link } from 'react-router-dom'
 import { LOGIN_PATHNAME } from '../router'
@@ -8,10 +11,16 @@ import styles from './Register.module.scss'
 const { Title } = Typography
 
 const Register: FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function handleFinish(value: any) {
-    console.log(value)
-  }
+  const nav = useNavigate()
+
+  //注册请求
+  const { run: handleRegister } = useRequest(values => registerService(values), {
+    manual: true,
+    onSuccess() {
+      message.success('注册成功')
+      nav(LOGIN_PATHNAME)
+    },
+  })
 
   return (
     <div className={styles.container}>
@@ -24,7 +33,11 @@ const Register: FC = () => {
         </Space>
       </div>
       <div>
-        <Form onFinish={handleFinish} labelCol={{ span: 6 }} wrapperCol={{ span: 16 }}>
+        <Form
+          onFinish={values => handleRegister(values)}
+          labelCol={{ span: 6 }}
+          wrapperCol={{ span: 16 }}
+        >
           <Form.Item
             label="用户名"
             name="username"

@@ -1,9 +1,12 @@
 import React, { FC, useEffect } from 'react'
-import { Link } from 'react-router-dom'
-import { Space, Typography, Form, Input, Button, Checkbox } from 'antd'
+import { Link, useNavigate } from 'react-router-dom'
+import { Space, Typography, Form, Input, Button, Checkbox, message } from 'antd'
 import { UserAddOutlined } from '@ant-design/icons'
 import { REGISTER_PATHNAME } from '../router'
 import styles from './Login.module.scss'
+import { useRequest } from 'ahooks'
+import { loginService } from '../services/user'
+import { LIST_PATHNAME } from '../router'
 
 const { Title } = Typography
 
@@ -28,6 +31,7 @@ function getUserInfoFromStorage() {
 }
 
 const Login: FC = () => {
+  const nav = useNavigate()
   const [form] = Form.useForm()
 
   useEffect(() => {
@@ -36,8 +40,8 @@ const Login: FC = () => {
   }, [])
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function handleFinish(values: any) {
-    console.log(values)
+  function handleLogin(values: any) {
+    login(values)
     const { remember, username, password } = values || {}
     if (remember) {
       rememberUser(username, password)
@@ -45,6 +49,14 @@ const Login: FC = () => {
       deleteUserFromStorage()
     }
   }
+
+  const { run: login } = useRequest(values => loginService(values), {
+    manual: true,
+    onSuccess() {
+      message.success('登录成功')
+      nav(LIST_PATHNAME)
+    },
+  })
 
   return (
     <div className={styles.container}>
@@ -59,7 +71,7 @@ const Login: FC = () => {
       <div>
         <Form
           initialValues={{ remember: true }}
-          onFinish={handleFinish}
+          onFinish={handleLogin}
           labelCol={{ span: 6 }}
           wrapperCol={{ span: 16 }}
           form={form}
