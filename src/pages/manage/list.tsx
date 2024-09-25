@@ -32,7 +32,6 @@ const MyList: FC = () => {
       return data
     },
     {
-      //手动执行
       manual: true,
       onSuccess: result => {
         const { list = [], total = 0 } = result

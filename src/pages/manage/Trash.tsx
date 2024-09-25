@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react'
-import { useTitle } from 'ahooks'
+import { useTitle, useRequest } from 'ahooks'
 import useLoadQuestionList from '../../hooks/useLoadQuestionList'
+import { updateQuestionDataService } from '../../services/question'
 import { Typography, Empty, Table, Tag, Button, Space, Modal, message, Spin } from 'antd'
 import ListSearch from '../../components/ListSearch'
 import ListPagination from '../../components/ListPagination'
@@ -10,7 +11,7 @@ const Trash: FC = () => {
   useTitle('夸克奶酪问卷-回收站')
   const { Title } = Typography
 
-  const { data = {}, loading } = useLoadQuestionList({ isDeleted: true })
+  const { data = {}, loading, run } = useLoadQuestionList({ isDeleted: true })
   const { list: questionList = [], total } = data
 
   //多选框选中ids
@@ -42,12 +43,34 @@ const Trash: FC = () => {
     })
   }
 
+  //恢复
+  const { loading: restoreLoading, run: handleRestore } = useRequest(
+    async () => {
+      for await (const id of selectedIds) {
+        await updateQuestionDataService(id, { isDeleted: false })
+      }
+    },
+    {
+      manual: true,
+      debounceWait: 500,
+      onSuccess() {
+        message.success('恢复成功')
+        run()
+      },
+    }
+  )
+
   //可以把JSX片段定义为一个变量
   const TableElm = (
     <>
       <div style={{ marginBottom: '16px' }}>
         <Space>
-          <Button type="primary" disabled={selectedIds.length === 0}>
+          <Button
+            type="primary"
+            disabled={selectedIds.length === 0}
+            loading={restoreLoading}
+            onClick={handleRestore}
+          >
             恢复
           </Button>
           <Button danger disabled={selectedIds.length === 0} onClick={deleteQuestion}>
