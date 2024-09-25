@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react'
 import { useTitle, useRequest } from 'ahooks'
 import useLoadQuestionList from '../../hooks/useLoadQuestionList'
-import { updateQuestionDataService } from '../../services/question'
+import { updateQuestionDataService, deleteQuestionService } from '../../services/question'
 import { Typography, Empty, Table, Tag, Button, Space, Modal, message, Spin } from 'antd'
 import ListSearch from '../../components/ListSearch'
 import ListPagination from '../../components/ListPagination'
@@ -30,20 +30,31 @@ const Trash: FC = () => {
     { title: '答卷数量', dataIndex: 'answerCount' },
   ]
 
-  function deleteQuestion() {
+  //删除问卷
+  const { loading: deleteLoading, run: deleteQuestion } = useRequest(
+    () => deleteQuestionService(selectedIds),
+    {
+      manual: true,
+      onSuccess() {
+        message.success('删除成功')
+        //刷新列表
+        run()
+        setSelectedIds([])
+      },
+    }
+  )
+  function handleDelete() {
     Modal.warning({
       title: '确定彻底删除选中问卷？',
       // icon: <ExclamationCircleOutlined />,
       content: '删除以后不可以找回',
       onOk: () => {
-        //发送删除请求，重新更换questionList
-
-        message.success('删除成功')
+        deleteQuestion()
       },
     })
   }
 
-  //恢复
+  //恢复问卷
   const { loading: restoreLoading, run: handleRestore } = useRequest(
     async () => {
       for await (const id of selectedIds) {
@@ -55,7 +66,9 @@ const Trash: FC = () => {
       debounceWait: 500,
       onSuccess() {
         message.success('恢复成功')
+        //刷新列表
         run()
+        setSelectedIds([])
       },
     }
   )
@@ -73,7 +86,12 @@ const Trash: FC = () => {
           >
             恢复
           </Button>
-          <Button danger disabled={selectedIds.length === 0} onClick={deleteQuestion}>
+          <Button
+            danger
+            disabled={selectedIds.length === 0}
+            loading={deleteLoading}
+            onClick={handleDelete}
+          >
             彻底删除
           </Button>
         </Space>
