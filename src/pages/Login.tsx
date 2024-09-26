@@ -7,6 +7,7 @@ import styles from './Login.module.scss'
 import { useRequest } from 'ahooks'
 import { loginService } from '../services/user'
 import { LIST_PATHNAME } from '../router'
+import { setToken } from '../utils/userToken'
 
 const { Title } = Typography
 
@@ -52,9 +53,10 @@ const Login: FC = () => {
 
   const { run: login } = useRequest(values => loginService(values), {
     manual: true,
-    onSuccess() {
+    onSuccess(res) {
       message.success('登录成功')
       nav(LIST_PATHNAME)
+      setToken(res.token)
     },
   })
 

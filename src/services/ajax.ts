@@ -1,11 +1,21 @@
 import axios from 'axios'
+import { getToken } from '../utils/userToken'
 import { message } from 'antd'
 
 const instance = axios.create({
   timeout: 10 * 1000,
 })
 
-//response拦截，，统一处理errno和msg
+//request拦截，挂上token
+instance.interceptors.request.use(
+  config => {
+    config.headers['Authorization'] = `Bearer ${getToken()}` //JWT固定格式
+    return config
+  },
+  error => Promise.reject(error)
+)
+
+//response拦截，统一处理errno和msg
 instance.interceptors.response.use(res => {
   const resData = (res.data || {}) as ResType
   const { errno, data = {}, msg } = resData
