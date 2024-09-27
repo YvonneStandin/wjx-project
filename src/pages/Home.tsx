@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { Button, Typography } from 'antd'
 import { LIST_PATHNAME } from '../router'
 import styles from './Home.module.scss'
+import TodoListReducer from '../TodoListReducer'
 
 const { Title, Paragraph } = Typography
 
@@ -23,6 +24,7 @@ const Home: FC = () => {
         <Button type="primary" size="large" onClick={loginHandler}>
           开始使用
         </Button>
+        <TodoListReducer></TodoListReducer>
       </div>
     </div>
   )
