@@ -1,6 +1,7 @@
 import React, { FC } from 'react'
 import { Outlet } from 'react-router-dom'
-import { Layout } from 'antd'
+import useLoadUserData from '../hooks/useLoadUserData'
+import { Layout, Spin } from 'antd'
 import Logo from '../components/Logo'
 import UserInfo from '../components/UserInfo'
 import styles from './MainLayout.module.scss'
@@ -8,6 +9,7 @@ import styles from './MainLayout.module.scss'
 const { Header, Footer, Content } = Layout
 
 const MainLayout: FC = () => {
+  const { waitingUserData } = useLoadUserData()
   return (
     <Layout>
       <Header className={styles.header}>
@@ -19,7 +21,7 @@ const MainLayout: FC = () => {
         </div>
       </Header>
       <Content className={styles.main}>
-        <Outlet></Outlet>
+        {waitingUserData ? <Spin></Spin> : <Outlet></Outlet>}
       </Content>
       <Footer className={styles.footer}>
         夸克奶酪问卷 &copy; 2024 - present. Created by Yvonne
