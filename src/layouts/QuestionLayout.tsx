@@ -11,7 +11,13 @@ const QuestionLayout: FC = () => {
   return (
     <div>
       <p>QuestionLayout</p>
-      {waitingUserData ? <Spin></Spin> : <Outlet></Outlet>}
+      {waitingUserData ? (
+        <div style={{ textAlign: 'center', marginTop: '60px' }}>
+          <Spin size="large"></Spin>
+        </div>
+      ) : (
+        <Outlet></Outlet>
+      )}
     </div>
   )
 }

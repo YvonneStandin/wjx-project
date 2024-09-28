@@ -24,7 +24,13 @@ const MainLayout: FC = () => {
         </div>
       </Header>
       <Content className={styles.main}>
-        {waitingUserData ? <Spin></Spin> : <Outlet></Outlet>}
+        {waitingUserData ? (
+          <div className={styles.spin}>
+            <Spin size="large"></Spin>
+          </div>
+        ) : (
+          <Outlet></Outlet>
+        )}
       </Content>
       <Footer className={styles.footer}>
         夸克奶酪问卷 &copy; 2024 - present. Created by Yvonne

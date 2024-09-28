@@ -8,6 +8,7 @@ import { loginReducer } from '../store/userReducer'
 function useLoadUserData() {
   const [waitingUserData, setWaitingUserData] = useState(true)
 
+  //从redux中获取用户信息
   const { username } = useGetUserInfo()
   useEffect(() => {
     if (username) {
