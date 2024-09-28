@@ -81,3 +81,11 @@ export const STAR_PATHNAME = '/manage/star'
 export const TRASH_PATHNAME = '/manage/trash'
 export const EDIT_PATHNAME = '/question/edit'
 export const STAT_PATHNAME = '/question/stat'
+
+export function isLoginOrRegister(pathname: string) {
+  return [LOGIN_PATHNAME, REGISTER_PATHNAME].includes(pathname)
+}
+
+export function isNoNeedUserInfo(pathname: string) {
+  return [LOGIN_PATHNAME, REGISTER_PATHNAME, HOME_PATHNAME].includes(pathname)
+}
