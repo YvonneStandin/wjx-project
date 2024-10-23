@@ -14,7 +14,7 @@ const ManageLayout: FC = () => {
   const { loading, run: createQuestion } = useRequest(createQuestionService, {
     manual: true,
     onSuccess: result => {
-      nav(`${EDIT_PATHNAME}${result.id}`)
+      nav(`${EDIT_PATHNAME}/${result.id}`)
       message.success('创建成功！')
     },
   })
