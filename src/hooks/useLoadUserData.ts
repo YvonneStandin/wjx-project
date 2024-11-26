@@ -30,7 +30,7 @@ function useLoadUserData() {
     },
   })
 
-  //ajax获取到的用户信息存储在redux，无需返回，值返回状态值
+  //ajax获取到的用户信息存储在redux，无需返回，只返回状态值
   return { waitingUserData }
 }
 

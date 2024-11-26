@@ -26,7 +26,9 @@ function useNavPage(waitingUserData: boolean) {
     } else {
       nav(LOGIN_PATHNAME)
     }
-  }, [waitingUserData, token, pathname])
+  }, [waitingUserData, pathname])
+  //其实不用监听token，仅登录和退出改变token，但都手动处理跳转了
+  //且localStorage中数据是否能监听的到待测试
 }
 
 export default useNavPage

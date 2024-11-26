@@ -49,31 +49,9 @@ const MyList: FC = () => {
     setStart(false)
     //重置字段是异步行为,导致loadMoreData函数执行中page还是旧值
     setTimeout(() => {
-      setStart(true)
       loadMoreData()
     }, 0)
   }, [searchParams])
-
-  //删除问卷
-  // function deleteQuestion(id: string) {
-  // setQuestionList(
-  //   produce(draft => {
-  //     draft.splice(
-  //       questionList.findIndex(item => item._id === id),
-  //       1
-  //     )
-  //   })
-  // )
-  // }
-
-  //发布问卷
-  // function publishQuestion(id: string) {
-  // setQuestionList(
-  //   produce(draft => {
-  //     draft[questionList.findIndex(item => item._id === id)].isPublished = true
-  //   })
-  // )
-  // }
 
   return (
     <>
