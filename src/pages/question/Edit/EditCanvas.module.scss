@@ -17,6 +17,10 @@
             pointer-events: none;//屏蔽鼠标行为，form不让选中聚焦
         }
     }
+    .selected {
+        border-color: #1890ff !important
+    }
+
 }
 .loading {
     background-color: #fff;

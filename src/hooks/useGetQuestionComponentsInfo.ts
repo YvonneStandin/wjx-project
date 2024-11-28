@@ -5,9 +5,7 @@ import { ComponentsStateType } from '../store/ComponentsReducer'
 function useGetQuestionComponentsInfo() {
   const components = useSelector<StateType>(state => state.components) as ComponentsStateType
 
-  const { componentList = [] } = components
-
-  return { componentList }
+  return components
 }
 
 export default useGetQuestionComponentsInfo

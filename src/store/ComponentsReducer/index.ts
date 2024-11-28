@@ -12,11 +12,12 @@ export type ComponentInfoType = {
 //所有组件列表(存储在redux中)
 export type ComponentsStateType = {
   componentList: ComponentInfoType[]
+  selectedId: string
 }
 
 const INIT_STATE: ComponentsStateType = {
   componentList: [],
-  //其他扩展
+  selectedId: '',
 }
 export const ComponentsSlice = createSlice({
   name: 'components',
@@ -26,8 +27,12 @@ export const ComponentsSlice = createSlice({
     resetComponents: (state: ComponentsStateType, action: PayloadAction<ComponentsStateType>) => {
       return action.payload
     },
+    //更换 selectedId
+    changeSelectedId: (state: ComponentsStateType, action: PayloadAction<string>) => {
+      state.selectedId = action.payload
+    },
   },
 })
 
-export const { resetComponents } = ComponentsSlice.actions
+export const { resetComponents, changeSelectedId } = ComponentsSlice.actions
 export default ComponentsSlice.reducer

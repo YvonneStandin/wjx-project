@@ -26,7 +26,13 @@ function useLoadQuestionData() {
     if (!data) return
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { componentList = [] } = data as any
-    dispatch(resetComponents({ componentList }))
+
+    //默认选中第一个
+    let selectedId = ''
+    if (componentList.length > 0) {
+      selectedId = componentList[0].fe_id
+    }
+    dispatch(resetComponents({ componentList, selectedId }))
   }, [data])
 
   //根据id变化，执行ajax
