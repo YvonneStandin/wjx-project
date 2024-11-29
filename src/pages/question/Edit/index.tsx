@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { changeSelectedId } from '../../../store/ComponentsReducer'
 import useLoadQuestionData from '../../../hooks/useLoadQuestionData'
 import EditCanvas from './EditCanvas'
+import LeftPanel from './LeftPanel'
 import styles from './index.module.scss'
 
 const Edit: FC = () => {
@@ -18,7 +19,9 @@ const Edit: FC = () => {
       <div className={styles.header}>header</div>
       <div className={styles['content-wrapper']}>
         <div className={styles.content}>
-          <div className={styles.left}>左</div>
+          <div className={styles.left}>
+            <LeftPanel />
+          </div>
           <div className={styles.main} onClick={handleClick}>
             <div className={styles['canvas-wrapper']}>
               <EditCanvas loading={loading} />
