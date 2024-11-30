@@ -17,7 +17,7 @@ const ComponentLib: FC = () => {
     function handleClick() {
       dispatch(
         addComponent({
-          fe_id: nanoid(),
+          fe_id: nanoid(), //前端生成的 id，mongodb不认这种格式，所以自定义fe_id
           type,
           title,
           props: defaultProps,

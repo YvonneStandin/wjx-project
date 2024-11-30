@@ -47,8 +47,22 @@ export const ComponentsSlice = createSlice({
       //默认选中新添加的组件
       state.selectedId = newComponent.fe_id
     },
+    //更改组件属性
+    changeComponentProps: (
+      state: ComponentsStateType,
+      action: PayloadAction<ComponentPropsType>
+    ) => {
+      const newProp = action.payload
+      //只有选中了才能编辑属性触发
+      const { selectedId, componentList } = state
+      const curComp = componentList.find(c => c.fe_id === selectedId)
+      if (curComp) {
+        curComp.props = newProp
+      }
+    },
   },
 })
 
-export const { resetComponents, changeSelectedId, addComponent } = ComponentsSlice.actions
+export const { resetComponents, changeSelectedId, addComponent, changeComponentProps } =
+  ComponentsSlice.actions
 export default ComponentsSlice.reducer

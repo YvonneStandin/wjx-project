@@ -15,7 +15,7 @@ import styles from './QuestionCard.module.scss'
 // import classNames from 'classnames'
 
 type PropsType = {
-  _id: string
+  _id: string //mongodb
   title: string
   isPublished: boolean
   isStar: boolean
