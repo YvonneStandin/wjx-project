@@ -5,6 +5,7 @@ import useLoadQuestionData from '../../../hooks/useLoadQuestionData'
 import EditCanvas from './EditCanvas'
 import LeftPanel from './LeftPanel'
 import RightPanel from './RightPanel'
+import EditHeader from './EditHeader'
 import styles from './index.module.scss'
 
 const Edit: FC = () => {
@@ -17,7 +18,9 @@ const Edit: FC = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>header</div>
+      <div>
+        <EditHeader />
+      </div>
       <div className={styles['content-wrapper']}>
         <div className={styles.content}>
           <div className={styles.left}>
