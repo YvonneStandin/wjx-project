@@ -15,7 +15,7 @@ const ComponentProp: FC = () => {
   const { selectedComponent } = useGetQuestionComponentsInfo()
   if (selectedComponent == null) return <NoProp />
 
-  const { type, props } = selectedComponent
+  const { type, props, isLocked, isHidden } = selectedComponent
   const componentConf = getComponentConfByType(type)
   if (componentConf == null) return <NoProp />
 
@@ -24,7 +24,8 @@ const ComponentProp: FC = () => {
   function onChange(newProps: ComponentPropsType) {
     dispatch(changeComponentProps(newProps))
   }
-  return <PropComponent {...props} onChange={onChange} />
+  //逻辑上isHidden隐藏时属性栏不会显示Form，仅作为突发bug兜底
+  return <PropComponent {...props} onChange={onChange} disabled={isLocked || isHidden} />
 }
 
 export default ComponentProp

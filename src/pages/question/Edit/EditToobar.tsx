@@ -12,12 +12,13 @@ import {
   RedoOutlined,
 } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
-import { deleteComponent, changeHidden } from '../../../store/ComponentsReducer'
+import { deleteComponent, changeHidden, toggleLocked } from '../../../store/ComponentsReducer'
 import useGetQuestionComponentsInfo from '../../../hooks/useGetQuestionComponentsInfo'
 
 const EditToobar: FC = () => {
   const dispatch = useDispatch()
-  const { selectedId } = useGetQuestionComponentsInfo()
+  const { selectedId, selectedComponent } = useGetQuestionComponentsInfo()
+  const { isLocked } = selectedComponent || {}
 
   //删除组件
   function handleDelete() {
@@ -26,6 +27,10 @@ const EditToobar: FC = () => {
   //隐藏组件
   function handleHidden() {
     dispatch(changeHidden({ fe_id: selectedId, isHidden: true }))
+  }
+  //锁定组件
+  function handleLock() {
+    dispatch(toggleLocked({ fe_id: selectedId }))
   }
 
   return (
@@ -36,8 +41,13 @@ const EditToobar: FC = () => {
       <Tooltip placement="bottom" title="隐藏">
         <Button shape="circle" icon={<EyeInvisibleOutlined />} onClick={handleHidden} />
       </Tooltip>
-      <Tooltip placement="bottom" title="锁住">
-        <Button shape="circle" icon={<LockOutlined />} />
+      <Tooltip placement="bottom" title={isLocked ? '解锁' : '锁定'}>
+        <Button
+          shape="circle"
+          icon={<LockOutlined />}
+          onClick={handleLock}
+          type={isLocked ? 'primary' : 'default'}
+        />
       </Tooltip>
       <Tooltip placement="bottom" title="复制">
         <Button shape="circle" icon={<CopyOutlined />} />

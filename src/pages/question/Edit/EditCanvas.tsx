@@ -46,13 +46,15 @@ const EditCanvas: FC<PropsType> = ({ loading }) => {
       {componentList
         .filter(c => !c.isHidden)
         .map(c => {
-          const { fe_id } = c
+          const { fe_id, isLocked } = c
 
           const wrapperDefaultClass = styles['component-wrapper']
           const wrapperSelectedClass = styles.selected
+          const wrapperLockedClass = styles.locked
           const wrapperClass = classNames({
             [wrapperDefaultClass]: true,
             [wrapperSelectedClass]: selectedId === fe_id,
+            [wrapperLockedClass]: isLocked,
           })
 
           return (
