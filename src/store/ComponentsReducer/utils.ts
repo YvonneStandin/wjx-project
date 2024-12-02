@@ -1,6 +1,7 @@
-import type { ComponentInfoType } from './index'
+import type { ComponentInfoType, ComponentsStateType } from './index'
 
-export default function getNextSelectedId(selectedId: string, componentList: ComponentInfoType[]) {
+//计算下一个选中组件
+export function getNextSelectedId(selectedId: string, componentList: ComponentInfoType[]) {
   const visibleComponentList = componentList.filter(c => !c.isHidden)
   const curIndex = visibleComponentList.findIndex(c => c.fe_id === selectedId)
   //当前无选中的组件
@@ -24,4 +25,19 @@ export default function getNextSelectedId(selectedId: string, componentList: Com
   }
 
   return nextSelectedId
+}
+
+//插入新组件
+export function insertNewComponent(state: ComponentsStateType, newComponent: ComponentInfoType) {
+  const { selectedId, componentList } = state
+  const index = componentList.findIndex(c => c.fe_id === selectedId)
+
+  //在当前选中组件后面追加新组件
+  if (index < 0) {
+    componentList.push(newComponent)
+  } else {
+    componentList.splice(index + 1, 0, newComponent)
+  }
+  //默认选中新添加的组件
+  state.selectedId = newComponent.fe_id
 }
