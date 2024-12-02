@@ -12,21 +12,29 @@ import {
   RedoOutlined,
 } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
-import { deleteComponent } from '../../../store/ComponentsReducer'
+import { deleteComponent, changeHidden } from '../../../store/ComponentsReducer'
+import useGetQuestionComponentsInfo from '../../../hooks/useGetQuestionComponentsInfo'
 
 const EditToobar: FC = () => {
   const dispatch = useDispatch()
+  const { selectedId } = useGetQuestionComponentsInfo()
 
+  //删除组件
   function handleDelete() {
     dispatch(deleteComponent())
   }
+  //隐藏组件
+  function handleHidden() {
+    dispatch(changeHidden({ fe_id: selectedId, isHidden: true }))
+  }
+
   return (
     <Space>
       <Tooltip placement="bottom" title="删除">
         <Button shape="circle" icon={<DeleteOutlined />} onClick={handleDelete} />
       </Tooltip>
       <Tooltip placement="bottom" title="隐藏">
-        <Button shape="circle" icon={<EyeInvisibleOutlined />} />
+        <Button shape="circle" icon={<EyeInvisibleOutlined />} onClick={handleHidden} />
       </Tooltip>
       <Tooltip placement="bottom" title="锁住">
         <Button shape="circle" icon={<LockOutlined />} />
@@ -43,7 +51,7 @@ const EditToobar: FC = () => {
       <Tooltip placement="bottom" title="zz">
         <Button shape="circle" icon={<DownOutlined />} />
       </Tooltip>
-      <Tooltip placement="bottom" title="刷新">
+      <Tooltip placement="bottom" title="撤销">
         <Button shape="circle" icon={<ReloadOutlined />} />
       </Tooltip>
       <Tooltip placement="bottom" title="重做">

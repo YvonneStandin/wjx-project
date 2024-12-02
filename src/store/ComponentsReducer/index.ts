@@ -7,6 +7,7 @@ export type ComponentInfoType = {
   fe_id: string
   type: string
   title: string
+  isHidden?: boolean
   props: ComponentPropsType
 }
 
@@ -63,14 +64,39 @@ export const ComponentsSlice = createSlice({
     },
     //删除组件(当前选中的组件)
     deleteComponent: (state: ComponentsStateType) => {
-      const { selectedId, componentList } = state
-      const curIndex = componentList.findIndex(c => c.fe_id === selectedId)
-      //当前没有选中的组件
-      if (curIndex < 0) return
-      const nextSelectedId = getNextSelectedId(curIndex, componentList)
-      componentList.splice(curIndex, 1)
-      //删除之后默认选中下一个组件或上一个组件
+      const { selectedId: removeId, componentList } = state
+
+      //计算下个选中组件
+      const nextSelectedId = getNextSelectedId(removeId, componentList)
       state.selectedId = nextSelectedId
+
+      const curIndex = componentList.findIndex(c => c.fe_id === removeId)
+      if (curIndex >= 0) {
+        componentList.splice(curIndex, 1)
+      }
+    },
+    //修改隐藏组件(当前选中的组件)
+    changeHidden: (
+      state: ComponentsStateType,
+      action: PayloadAction<{ fe_id: string; isHidden: boolean }>
+    ) => {
+      const { componentList } = state
+      const { fe_id, isHidden } = action.payload
+
+      //计算下个选中组件
+      if (isHidden) {
+        //隐藏时
+        const nextSelectedId = getNextSelectedId(fe_id, componentList)
+        state.selectedId = nextSelectedId
+      } else {
+        //显示时
+        state.selectedId = fe_id
+      }
+
+      const curComp = componentList.find(c => c.fe_id === fe_id)
+      if (curComp) {
+        curComp.isHidden = isHidden
+      }
     },
   },
 })
@@ -81,5 +107,6 @@ export const {
   addComponent,
   changeComponentProps,
   deleteComponent,
+  changeHidden,
 } = ComponentsSlice.actions
 export default ComponentsSlice.reducer
