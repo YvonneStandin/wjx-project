@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ComponentPropsType } from '../../components/QuestionComponents'
+import getNextSelectedId from './utils'
 
 //单个组件数据类型
 export type ComponentInfoType = {
@@ -60,9 +61,25 @@ export const ComponentsSlice = createSlice({
         curComp.props = newProp
       }
     },
+    //删除组件(当前选中的组件)
+    deleteComponent: (state: ComponentsStateType) => {
+      const { selectedId, componentList } = state
+      const curIndex = componentList.findIndex(c => c.fe_id === selectedId)
+      //当前没有选中的组件
+      if (curIndex < 0) return
+      const nextSelectedId = getNextSelectedId(curIndex, componentList)
+      componentList.splice(curIndex, 1)
+      //删除之后默认选中下一个组件或上一个组件
+      state.selectedId = nextSelectedId
+    },
   },
 })
 
-export const { resetComponents, changeSelectedId, addComponent, changeComponentProps } =
-  ComponentsSlice.actions
+export const {
+  resetComponents,
+  changeSelectedId,
+  addComponent,
+  changeComponentProps,
+  deleteComponent,
+} = ComponentsSlice.actions
 export default ComponentsSlice.reducer

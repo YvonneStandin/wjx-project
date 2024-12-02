@@ -2,6 +2,7 @@ import React, { FC } from 'react'
 import { Button, Typography, Space } from 'antd'
 import { LeftOutlined, CheckOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
+import EditToobar from './EditToobar'
 import styles from './EditHeader.module.scss'
 
 const { Title } = Typography
@@ -22,7 +23,9 @@ const EditHeader: FC = () => {
             </Title>
           </Space>
         </div>
-        <div>main</div>
+        <div className={styles.main}>
+          <EditToobar />
+        </div>
         <div className={styles.right}>
           <Space>
             <Button icon={<CheckOutlined />}>保存</Button>
