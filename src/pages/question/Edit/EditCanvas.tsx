@@ -6,6 +6,7 @@ import useGetQuestionComponentsInfo from '../../../hooks/useGetQuestionComponent
 import { getComponentConfByType } from '../../../components/QuestionComponents'
 import type { ComponentInfoType } from '../../../store/ComponentsReducer'
 import { changeSelectedId } from '../../../store/ComponentsReducer'
+import useBindCanvasKeyPress from '../../../hooks/useBindCanvasKeyPress'
 import styles from './EditCanvas.module.scss'
 
 type PropsType = {
@@ -33,6 +34,8 @@ const EditCanvas: FC<PropsType> = ({ loading }) => {
     event.stopPropagation()
     dispatch(changeSelectedId(id))
   }
+
+  useBindCanvasKeyPress()
 
   if (loading) {
     return (

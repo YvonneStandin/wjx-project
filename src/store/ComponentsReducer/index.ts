@@ -42,18 +42,6 @@ export const ComponentsSlice = createSlice({
       const newComponent = action.payload
 
       insertNewComponent(state, newComponent)
-
-      // const { selectedId, componentList } = state
-      // const index = componentList.findIndex(c => c.fe_id === selectedId)
-
-      // //在当前选中组件后面追加新组件
-      // if (index < 0) {
-      //   componentList.push(newComponent)
-      // } else {
-      //   componentList.splice(index + 1, 0, newComponent)
-      // }
-      // //默认选中新添加的组件
-      // state.selectedId = newComponent.fe_id
     },
     //更改组件属性
     changeComponentProps: (
@@ -133,6 +121,27 @@ export const ComponentsSlice = createSlice({
       //添加新的组件
       insertNewComponent(state, newComponent)
     },
+    //选中上一个组件
+    selectPrevComponent: (state: ComponentsStateType) => {
+      const { selectedId, componentList } = state
+      if (!selectedId) return
+
+      const curIndex = componentList.findIndex(c => c.fe_id === selectedId)
+      if (curIndex === 0) return
+
+      state.selectedId = componentList[curIndex - 1].fe_id
+    },
+    //选中下一个组件
+    selectNextComponent: (state: ComponentsStateType) => {
+      const { selectedId, componentList } = state
+      if (!selectedId) return
+
+      const curIndex = componentList.findIndex(c => c.fe_id === selectedId)
+      const len = componentList.length
+      if (curIndex === len - 1) return
+
+      state.selectedId = componentList[curIndex + 1].fe_id
+    },
   },
 })
 
@@ -146,5 +155,7 @@ export const {
   toggleLocked,
   copyComponent,
   pasteComponent,
+  selectPrevComponent,
+  selectNextComponent,
 } = ComponentsSlice.actions
 export default ComponentsSlice.reducer

@@ -26,7 +26,11 @@ const EditToobar: FC = () => {
   const { selectedId, selectedComponent, copiedComponent, componentList } =
     useGetQuestionComponentsInfo()
   const { isLocked } = selectedComponent || {}
-  const len = componentList.length
+
+  //根据可视组件列表长度判定按钮点击
+  function disabledByLength() {
+    return !componentList.filter(c => !c.isHidden).length
+  }
 
   //删除组件
   function handleDelete() {
@@ -48,6 +52,7 @@ const EditToobar: FC = () => {
   function handlePaste() {
     dispatch(pasteComponent())
   }
+  //TODO 上移/下移 撤销/重做
 
   return (
     <Space>
@@ -56,7 +61,7 @@ const EditToobar: FC = () => {
           shape="circle"
           icon={<DeleteOutlined />}
           onClick={handleDelete}
-          disabled={len < 1}
+          disabled={disabledByLength()}
         />
       </Tooltip>
       <Tooltip placement="bottom" title="隐藏">
@@ -64,7 +69,7 @@ const EditToobar: FC = () => {
           shape="circle"
           icon={<EyeInvisibleOutlined />}
           onClick={handleHidden}
-          disabled={len < 1}
+          disabled={disabledByLength()}
         />
       </Tooltip>
       <Tooltip placement="bottom" title={isLocked ? '解锁' : '锁定'}>
@@ -73,11 +78,16 @@ const EditToobar: FC = () => {
           icon={<LockOutlined />}
           onClick={handleLock}
           type={isLocked ? 'primary' : 'default'}
-          disabled={len < 1}
+          disabled={disabledByLength()}
         />
       </Tooltip>
       <Tooltip placement="bottom" title="复制">
-        <Button shape="circle" icon={<CopyOutlined />} onClick={handleCopy} disabled={len < 1} />
+        <Button
+          shape="circle"
+          icon={<CopyOutlined />}
+          onClick={handleCopy}
+          disabled={disabledByLength()}
+        />
       </Tooltip>
       <Tooltip placement="bottom" title="粘贴">
         <Button
@@ -87,10 +97,10 @@ const EditToobar: FC = () => {
           disabled={copiedComponent == null}
         />
       </Tooltip>
-      <Tooltip placement="bottom" title="zz">
+      <Tooltip placement="bottom" title="上移">
         <Button shape="circle" icon={<UpOutlined />} />
       </Tooltip>
-      <Tooltip placement="bottom" title="zz">
+      <Tooltip placement="bottom" title="下移">
         <Button shape="circle" icon={<DownOutlined />} />
       </Tooltip>
       <Tooltip placement="bottom" title="撤销">
