@@ -1,9 +1,12 @@
 import type { FC } from 'react'
 import QuestionTitleConf, { QuestionTitlePropsType } from './QuestionTitle'
 import QuestionInputConf, { QuestionInputPropsType } from './QuestionInput'
+import QuestionParagraphConf, { QuestionParagraphPropsType } from './QuestionParagraph'
 
 //统一，各个组件的prop type，用在redux
-export type ComponentPropsType = QuestionInputPropsType & QuestionTitlePropsType
+export type ComponentPropsType = QuestionInputPropsType &
+  QuestionTitlePropsType &
+  QuestionParagraphPropsType
 
 //统一，组件配置 type
 export type ComponentConfType = {
@@ -14,7 +17,11 @@ export type ComponentConfType = {
   defaultProps: ComponentPropsType
 }
 //全部组件配置列表
-const componentConfList: ComponentConfType[] = [QuestionTitleConf, QuestionInputConf]
+const componentConfList: ComponentConfType[] = [
+  QuestionTitleConf,
+  QuestionInputConf,
+  QuestionParagraphConf,
+]
 
 //根据type字段查找具体的组件配置
 export function getComponentConfByType(type: string) {
@@ -25,7 +32,7 @@ export const componentConfGroup = [
   {
     groupId: 'textGroup',
     groupName: '文本显示',
-    components: [QuestionTitleConf],
+    components: [QuestionTitleConf, QuestionParagraphConf],
   },
   {
     groupId: 'inputGroup',
