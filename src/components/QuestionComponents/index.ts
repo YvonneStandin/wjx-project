@@ -2,12 +2,13 @@ import type { FC } from 'react'
 import QuestionTitleConf, { QuestionTitlePropsType } from './QuestionTitle'
 import QuestionInputConf, { QuestionInputPropsType } from './QuestionInput'
 import QuestionParagraphConf, { QuestionParagraphPropsType } from './QuestionParagraph'
+import QuestionInfoConf, { QuestionInfoPropsType } from './QuestionInfo'
 
 //统一，各个组件的prop type，用在redux
-export type ComponentPropsType = QuestionInputPropsType &
+export type ComponentPropsType = QuestionInfoPropsType &
+  QuestionInputPropsType &
   QuestionTitlePropsType &
   QuestionParagraphPropsType
-
 //统一，组件配置 type
 export type ComponentConfType = {
   title: string
@@ -18,6 +19,7 @@ export type ComponentConfType = {
 }
 //全部组件配置列表
 const componentConfList: ComponentConfType[] = [
+  QuestionInfoConf,
   QuestionTitleConf,
   QuestionInputConf,
   QuestionParagraphConf,
@@ -32,7 +34,7 @@ export const componentConfGroup = [
   {
     groupId: 'textGroup',
     groupName: '文本显示',
-    components: [QuestionTitleConf, QuestionParagraphConf],
+    components: [QuestionInfoConf, QuestionTitleConf, QuestionParagraphConf],
   },
   {
     groupId: 'inputGroup',
