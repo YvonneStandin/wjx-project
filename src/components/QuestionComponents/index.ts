@@ -3,12 +3,14 @@ import QuestionTitleConf, { QuestionTitlePropsType } from './QuestionTitle'
 import QuestionInputConf, { QuestionInputPropsType } from './QuestionInput'
 import QuestionParagraphConf, { QuestionParagraphPropsType } from './QuestionParagraph'
 import QuestionInfoConf, { QuestionInfoPropsType } from './QuestionInfo'
+import QuestionTextareaConf, { QuestionTextareaPropsType } from './QuestionTextarea'
 
 //统一，各个组件的prop type，用在redux
 export type ComponentPropsType = QuestionInfoPropsType &
   QuestionInputPropsType &
   QuestionTitlePropsType &
-  QuestionParagraphPropsType
+  QuestionParagraphPropsType &
+  QuestionTextareaPropsType
 //统一，组件配置 type
 export type ComponentConfType = {
   title: string
@@ -23,6 +25,7 @@ const componentConfList: ComponentConfType[] = [
   QuestionTitleConf,
   QuestionInputConf,
   QuestionParagraphConf,
+  QuestionTextareaConf,
 ]
 
 //根据type字段查找具体的组件配置
@@ -39,6 +42,6 @@ export const componentConfGroup = [
   {
     groupId: 'inputGroup',
     groupName: '用户输入',
-    components: [QuestionInputConf],
+    components: [QuestionInputConf, QuestionTextareaConf],
   },
 ]
