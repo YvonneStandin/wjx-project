@@ -5,6 +5,7 @@ import QuestionParagraphConf, { QuestionParagraphPropsType } from './QuestionPar
 import QuestionInfoConf, { QuestionInfoPropsType } from './QuestionInfo'
 import QuestionTextareaConf, { QuestionTextareaPropsType } from './QuestionTextarea'
 import QuestionRadioConf, { QuestionRadioPropsType } from './QuestionRadio'
+import QuestionCheckboxConf, { QuestionCheckboxPropsType } from './QuestionCheckbox'
 
 //统一，各个组件的prop type，用在redux
 export type ComponentPropsType = QuestionInfoPropsType &
@@ -12,7 +13,8 @@ export type ComponentPropsType = QuestionInfoPropsType &
   QuestionTitlePropsType &
   QuestionParagraphPropsType &
   QuestionTextareaPropsType &
-  QuestionRadioPropsType
+  QuestionRadioPropsType &
+  QuestionCheckboxPropsType
 //统一，组件配置 type
 export type ComponentConfType = {
   title: string
@@ -29,6 +31,7 @@ const componentConfList: ComponentConfType[] = [
   QuestionParagraphConf,
   QuestionTextareaConf,
   QuestionRadioConf,
+  QuestionCheckboxConf,
 ]
 
 //根据type字段查找具体的组件配置
@@ -50,6 +53,6 @@ export const componentConfGroup = [
   {
     groupId: 'selectGroup',
     groupName: '用户选择',
-    components: [QuestionRadioConf],
+    components: [QuestionRadioConf, QuestionCheckboxConf],
   },
 ]
