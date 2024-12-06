@@ -35,7 +35,7 @@ const ComponentLib: FC = () => {
   }
 
   return (
-    <>
+    <div className={styles.componentLib}>
       {componentConfGroup.map((group, index) => {
         const { groupId, groupName, components } = group
 
@@ -48,7 +48,7 @@ const ComponentLib: FC = () => {
           </div>
         )
       })}
-    </>
+    </div>
   )
 }
 

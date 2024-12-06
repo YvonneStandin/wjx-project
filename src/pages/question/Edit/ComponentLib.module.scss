@@ -1,3 +1,8 @@
+.componentLib {
+    overflow: auto;
+    max-height: calc(100vh - 57px - 24px - 46px - 16px);
+}
+
 .wrapper {
     margin-bottom: 12px;
     padding: 12px;
