@@ -3,12 +3,14 @@ import { Button, Typography, Space } from 'antd'
 import { LeftOutlined, CheckOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 import EditToobar from './EditToobar'
+import useGetPageInfo from '../../../hooks/useGetPageInfo'
 import styles from './EditHeader.module.scss'
 
 const { Title } = Typography
 
 const EditHeader: FC = () => {
   const navigate = useNavigate()
+  const { title } = useGetPageInfo()
 
   return (
     <div className={styles['header-wrapper']}>
@@ -19,7 +21,7 @@ const EditHeader: FC = () => {
               返回
             </Button>
             <Title level={4} style={{ margin: 0 }}>
-              问卷标题
+              {title}
             </Title>
           </Space>
         </div>
