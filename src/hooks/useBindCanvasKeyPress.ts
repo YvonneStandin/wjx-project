@@ -6,7 +6,7 @@ import {
   pasteComponent,
   selectPrevComponent,
   selectNextComponent,
-} from '../store/ComponentsReducer'
+} from '../store/componentsReducer'
 
 //光标没有 focus 到任何 input
 function isActiveElementValid() {

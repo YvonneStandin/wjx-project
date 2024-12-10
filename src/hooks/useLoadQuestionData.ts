@@ -3,7 +3,8 @@ import { useParams } from 'react-router-dom'
 import { useRequest } from 'ahooks'
 import { getQuestionService } from '../services/question'
 import { useDispatch } from 'react-redux'
-import { resetComponents } from '../store/ComponentsReducer'
+import { resetComponents } from '../store/componentsReducer'
+import { resetPageInfo } from '../store/pageInfoReducer'
 
 function useLoadQuestionData() {
   //跟随调用位置url
@@ -25,7 +26,7 @@ function useLoadQuestionData() {
   useEffect(() => {
     if (!data) return
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { componentList = [] } = data as any
+    const { componentList = [], title = '', desc = '', js = '', css = '' } = data as any
 
     //默认选中第一个
     let selectedId = ''
@@ -33,6 +34,7 @@ function useLoadQuestionData() {
       selectedId = componentList[0].fe_id
     }
     dispatch(resetComponents({ componentList, selectedId, copiedComponent: null }))
+    dispatch(resetPageInfo({ title, desc, js, css }))
   }, [data])
 
   //根据id变化，执行ajax

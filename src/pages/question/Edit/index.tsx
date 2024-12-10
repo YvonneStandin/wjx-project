@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { useDispatch } from 'react-redux'
-import { changeSelectedId } from '../../../store/ComponentsReducer'
+import { changeSelectedId } from '../../../store/componentsReducer'
 import useLoadQuestionData from '../../../hooks/useLoadQuestionData'
 import EditCanvas from './EditCanvas'
 import LeftPanel from './LeftPanel'

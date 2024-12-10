@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import { useDispatch } from 'react-redux'
-import { changeComponentProps } from '../../../store/ComponentsReducer'
+import { changeComponentProps } from '../../../store/componentsReducer'
 import useGetQuestionComponentsInfo from '../../../hooks/useGetQuestionComponentsInfo'
 import { getComponentConfByType } from '../../../components/QuestionComponents'
 import type { ComponentPropsType } from '../../../components/QuestionComponents'

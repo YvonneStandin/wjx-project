@@ -18,7 +18,7 @@ import {
   toggleLocked,
   copyComponent,
   pasteComponent,
-} from '../../../store/ComponentsReducer'
+} from '../../../store/componentsReducer'
 import useGetQuestionComponentsInfo from '../../../hooks/useGetQuestionComponentsInfo'
 
 const EditToobar: FC = () => {

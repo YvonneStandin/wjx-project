@@ -8,7 +8,7 @@ import {
   changeComponentTitle,
   toggleLocked,
   changeHidden,
-} from '../../../store/ComponentsReducer'
+} from '../../../store/componentsReducer'
 import useGetQuestionComponentsInfo from '../../../hooks/useGetQuestionComponentsInfo'
 import styles from './Layers.module.scss'
 
