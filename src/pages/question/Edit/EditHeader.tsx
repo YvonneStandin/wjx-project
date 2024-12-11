@@ -1,16 +1,48 @@
-import React, { FC } from 'react'
-import { Button, Typography, Space } from 'antd'
-import { LeftOutlined, CheckOutlined } from '@ant-design/icons'
+import React, { ChangeEvent, FC, useState } from 'react'
+import { Button, Typography, Space, Input } from 'antd'
+import { LeftOutlined, CheckOutlined, EditOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { resetPageInfo } from '../../../store/pageInfoReducer'
 import EditToobar from './EditToobar'
 import useGetPageInfo from '../../../hooks/useGetPageInfo'
 import styles from './EditHeader.module.scss'
 
 const { Title } = Typography
 
+//显示和修改标题
+const TitleElem: FC = () => {
+  const pageInfo = useGetPageInfo()
+  const { title } = pageInfo
+  const dispatch = useDispatch()
+  const [editState, setEditState] = useState(false)
+
+  function handleChangeTitle(e: ChangeEvent<HTMLInputElement>) {
+    dispatch(resetPageInfo({ ...pageInfo, title: e.target.value }))
+  }
+
+  return (
+    <Space>
+      <Title level={4} style={{ margin: 0 }}>
+        {editState && (
+          <Input
+            autoFocus
+            value={title}
+            onChange={handleChangeTitle}
+            onPressEnter={() => setEditState(false)}
+            onBlur={() => setEditState(false)}
+          />
+        )}
+        {!editState && title}
+      </Title>
+      <Button type="text" icon={<EditOutlined />} onClick={() => setEditState(!editState)} />
+    </Space>
+  )
+}
+
+//编辑器头部
 const EditHeader: FC = () => {
   const navigate = useNavigate()
-  const { title } = useGetPageInfo()
 
   return (
     <div className={styles['header-wrapper']}>
@@ -20,9 +52,7 @@ const EditHeader: FC = () => {
             <Button type="link" icon={<LeftOutlined />} onClick={() => navigate(-1)}>
               返回
             </Button>
-            <Title level={4} style={{ margin: 0 }}>
-              {title}
-            </Title>
+            <TitleElem />
           </Space>
         </div>
         <div className={styles.main}>
