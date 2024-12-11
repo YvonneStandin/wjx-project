@@ -1,11 +1,14 @@
 import React, { ChangeEvent, FC, useState } from 'react'
+import { useRequest, useKeyPress, useDebounceEffect } from 'ahooks'
 import { Button, Typography, Space, Input } from 'antd'
 import { LeftOutlined, CheckOutlined, EditOutlined } from '@ant-design/icons'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { resetPageInfo } from '../../../store/pageInfoReducer'
 import EditToobar from './EditToobar'
 import useGetPageInfo from '../../../hooks/useGetPageInfo'
+import useGetQuestionComponentsInfo from '../../../hooks/useGetQuestionComponentsInfo'
+import { updateQuestionDataService } from '../../../services/question'
 import styles from './EditHeader.module.scss'
 
 const { Title } = Typography
@@ -40,6 +43,44 @@ const TitleElem: FC = () => {
   )
 }
 
+//保存按钮
+const SaveButton: FC = () => {
+  const { componentList } = useGetQuestionComponentsInfo()
+  const pageInfo = useGetPageInfo()
+  const opt = { ...pageInfo, componentList }
+  const { id = '' } = useParams()
+
+  const { loading, run: handleSave } = useRequest(
+    async () => {
+      if (!id) throw new Error('没有问卷 id')
+      const data = await updateQuestionDataService(id, opt)
+      return data
+    },
+    {
+      manual: true,
+    }
+  )
+  //快捷键保存
+  useKeyPress(['ctrl.s', 'meta.s'], (e: KeyboardEvent) => {
+    e.preventDefault()
+    if (!loading) handleSave()
+  })
+  //监听变化自动保存（防抖）
+  useDebounceEffect(
+    () => {
+      handleSave()
+    },
+    [componentList, pageInfo],
+    { wait: 1000 }
+  )
+
+  return (
+    <Button icon={<CheckOutlined />} onClick={handleSave} loading={loading}>
+      保存
+    </Button>
+  )
+}
+
 //编辑器头部
 const EditHeader: FC = () => {
   const navigate = useNavigate()
@@ -60,7 +101,7 @@ const EditHeader: FC = () => {
         </div>
         <div className={styles.right}>
           <Space>
-            <Button icon={<CheckOutlined />}>保存</Button>
+            <SaveButton />
             <Button type="primary">发布</Button>
           </Space>
         </div>
