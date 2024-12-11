@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FC, useState } from 'react'
 import { useRequest, useKeyPress, useDebounceEffect } from 'ahooks'
-import { Button, Typography, Space, Input } from 'antd'
+import { Button, Typography, Space, Input, message } from 'antd'
 import { LeftOutlined, CheckOutlined, EditOutlined } from '@ant-design/icons'
 import { useNavigate, useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
@@ -9,6 +9,7 @@ import EditToobar from './EditToobar'
 import useGetPageInfo from '../../../hooks/useGetPageInfo'
 import useGetQuestionComponentsInfo from '../../../hooks/useGetQuestionComponentsInfo'
 import { updateQuestionDataService } from '../../../services/question'
+import { STAT_PATHNAME } from '../../../router'
 import styles from './EditHeader.module.scss'
 
 const { Title } = Typography
@@ -48,7 +49,7 @@ const SaveButton: FC = () => {
   const { componentList } = useGetQuestionComponentsInfo()
   const pageInfo = useGetPageInfo()
   const opt = { ...pageInfo, componentList }
-  const { id = '' } = useParams()
+  const { id } = useParams()
 
   const { loading, run: handleSave } = useRequest(
     async () => {
@@ -81,6 +82,35 @@ const SaveButton: FC = () => {
   )
 }
 
+//发布按钮
+const PublishButton: FC = () => {
+  const nav = useNavigate()
+  const { componentList } = useGetQuestionComponentsInfo()
+  const pageInfo = useGetPageInfo()
+  const opt = { ...pageInfo, componentList, isPublished: true }
+  const { id } = useParams()
+
+  const { loading, run: handlePublish } = useRequest(
+    async () => {
+      if (!id) throw new Error('没有问卷 id')
+      const data = await updateQuestionDataService(id, opt)
+      return data
+    },
+    {
+      manual: true,
+      onSuccess() {
+        message.success('发布成功')
+        nav(`${STAT_PATHNAME}/${id}`)
+      },
+    }
+  )
+  return (
+    <Button type="primary" onClick={handlePublish} loading={loading}>
+      发布
+    </Button>
+  )
+}
+
 //编辑器头部
 const EditHeader: FC = () => {
   const navigate = useNavigate()
@@ -102,7 +132,7 @@ const EditHeader: FC = () => {
         <div className={styles.right}>
           <Space>
             <SaveButton />
-            <Button type="primary">发布</Button>
+            <PublishButton />
           </Space>
         </div>
       </div>
