@@ -8,8 +8,11 @@ import {
   changeComponentTitle,
   toggleLocked,
   changeHidden,
+  changeComponentSort,
 } from '../../../store/componentsReducer'
 import useGetQuestionComponentsInfo from '../../../hooks/useGetQuestionComponentsInfo'
+import SortableContainer from '../../../components/DragSortable/SortableContainer'
+import SortableItem from '../../../components/DragSortable/SortableItem'
 import styles from './Layers.module.scss'
 
 const Layers: FC = () => {
@@ -17,8 +20,18 @@ const Layers: FC = () => {
   const dispatch = useDispatch()
   const [changingTitleId, setChangingTitleId] = useState('')
 
+  //SortableContainer 组件的 items 属性，需要每个 item 都有 id
+  const componentListWithId = componentList.map(c => {
+    return { ...c, id: c.fe_id }
+  })
+
+  //拖拽排序结束（在这更改 store 数据
+  function handleDragEnd(oldIndex: number, newIndex: number) {
+    dispatch(changeComponentSort({ oldIndex, newIndex }))
+  }
+
   return (
-    <>
+    <SortableContainer items={componentListWithId} onDragEnd={handleDragEnd}>
       {componentList.map(c => {
         const { title, fe_id, isHidden, isLocked } = c
 
@@ -57,43 +70,45 @@ const Layers: FC = () => {
         }
 
         return (
-          <div key={fe_id} className={styles.layers}>
-            <div className={titleClass} onClick={() => handleTitleClick(fe_id)}>
-              {changingTitleId === fe_id && (
-                <Input
-                  autoFocus
-                  value={title}
-                  onPressEnter={() => setChangingTitleId('')}
-                  onBlur={() => setChangingTitleId('')}
-                  onChange={handleTitleChange}
-                />
-              )}
-              {changingTitleId !== fe_id && title}
+          <SortableItem key={fe_id} id={fe_id}>
+            <div className={styles.layers}>
+              <div className={titleClass} onClick={() => handleTitleClick(fe_id)}>
+                {changingTitleId === fe_id && (
+                  <Input
+                    autoFocus
+                    value={title}
+                    onPressEnter={() => setChangingTitleId('')}
+                    onBlur={() => setChangingTitleId('')}
+                    onChange={handleTitleChange}
+                  />
+                )}
+                {changingTitleId !== fe_id && title}
+              </div>
+              <div className={styles.handler}>
+                <Space>
+                  <Button
+                    size="small"
+                    shape="circle"
+                    className={isHidden ? '' : styles.btn}
+                    type={isHidden ? 'primary' : 'text'}
+                    icon={<EyeInvisibleOutlined />}
+                    onClick={() => handleChangeHidden(fe_id, !isHidden)}
+                  ></Button>
+                  <Button
+                    size="small"
+                    shape="circle"
+                    className={isLocked ? '' : styles.btn}
+                    type={isLocked ? 'primary' : 'text'}
+                    icon={<LockOutlined />}
+                    onClick={() => handleToggleLocked(fe_id)}
+                  ></Button>
+                </Space>
+              </div>
             </div>
-            <div className={styles.handler}>
-              <Space>
-                <Button
-                  size="small"
-                  shape="circle"
-                  className={isHidden ? '' : styles.btn}
-                  type={isHidden ? 'primary' : 'text'}
-                  icon={<EyeInvisibleOutlined />}
-                  onClick={() => handleChangeHidden(fe_id, !isHidden)}
-                ></Button>
-                <Button
-                  size="small"
-                  shape="circle"
-                  className={isLocked ? '' : styles.btn}
-                  type={isLocked ? 'primary' : 'text'}
-                  icon={<LockOutlined />}
-                  onClick={() => handleToggleLocked(fe_id)}
-                ></Button>
-              </Space>
-            </div>
-          </div>
+          </SortableItem>
         )
       })}
-    </>
+    </SortableContainer>
   )
 }
 
