@@ -8,12 +8,15 @@ import {
   selectNextComponent,
 } from '../store/componentsReducer'
 
-//光标没有 focus 到任何 input
+//判断 activeElement 合法
 function isActiveElementValid() {
   const activeElement = document.activeElement
+  //无 dnd-kit
+  // if (activeElement === document.body) return true //光标没有 focus 到 input 或者没有选中组件
 
+  //有 dnd-kit
   if (activeElement === document.body) return true
-
+  if (activeElement?.matches('div[role="button"]')) return true //被 dnd-kit 包裹的 div（组件被选中）
   return false
 }
 

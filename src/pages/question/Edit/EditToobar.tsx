@@ -18,6 +18,7 @@ import {
   toggleLocked,
   copyComponent,
   pasteComponent,
+  changeComponentSort,
 } from '../../../store/componentsReducer'
 import useGetQuestionComponentsInfo from '../../../hooks/useGetQuestionComponentsInfo'
 
@@ -26,6 +27,8 @@ const EditToobar: FC = () => {
   const { selectedId, selectedComponent, copiedComponent, componentList } =
     useGetQuestionComponentsInfo()
   const { isLocked } = selectedComponent || {}
+
+  const selectedIndex = componentList.findIndex(c => c.fe_id === selectedId)
 
   //根据可视组件列表长度判定按钮点击
   function disabledByLength() {
@@ -52,7 +55,15 @@ const EditToobar: FC = () => {
   function handlePaste() {
     dispatch(pasteComponent())
   }
-  //TODO 上移/下移 撤销/重做
+  // 上移
+  function handleSortUp() {
+    dispatch(changeComponentSort({ oldIndex: selectedIndex, newIndex: selectedIndex - 1 }))
+  }
+  // 下移
+  function handleSortDown() {
+    dispatch(changeComponentSort({ oldIndex: selectedIndex, newIndex: selectedIndex + 1 }))
+  }
+  //TODO 撤销/重做
 
   return (
     <Space>
@@ -98,10 +109,20 @@ const EditToobar: FC = () => {
         />
       </Tooltip>
       <Tooltip placement="bottom" title="上移">
-        <Button shape="circle" icon={<UpOutlined />} />
+        <Button
+          shape="circle"
+          icon={<UpOutlined />}
+          onClick={handleSortUp}
+          disabled={!selectedId || 0 === selectedIndex}
+        />
       </Tooltip>
       <Tooltip placement="bottom" title="下移">
-        <Button shape="circle" icon={<DownOutlined />} />
+        <Button
+          shape="circle"
+          icon={<DownOutlined />}
+          onClick={handleSortDown}
+          disabled={!selectedId || componentList.length - 1 === selectedIndex}
+        />
       </Tooltip>
       <Tooltip placement="bottom" title="撤销">
         <Button shape="circle" icon={<ReloadOutlined />} />

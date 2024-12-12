@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+
+/* dnd-kit 拖拽样式修改 */
+
+div[role='button'] {
+  outline: 0;
+}
