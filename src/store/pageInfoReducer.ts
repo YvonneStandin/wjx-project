@@ -5,6 +5,7 @@ export type PageInfoStateType = {
   desc?: string
   js?: string
   css?: string
+  isPublished: boolean
 }
 
 const INIT_STATE: PageInfoStateType = {
@@ -12,6 +13,7 @@ const INIT_STATE: PageInfoStateType = {
   desc: '',
   js: '',
   css: '',
+  isPublished: true,
 }
 
 const pageInfoSlice = createSlice({

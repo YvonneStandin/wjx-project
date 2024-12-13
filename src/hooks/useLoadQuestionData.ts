@@ -25,8 +25,15 @@ function useLoadQuestionData() {
   //根据获取的data设置redux store
   useEffect(() => {
     if (!data) return
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const { componentList = [], title = '', desc = '', js = '', css = '' } = data as any
+    const {
+      componentList = [],
+      title = '',
+      desc = '',
+      js = '',
+      css = '',
+      isPublished = false,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } = data as any
 
     //默认选中第一个
     let selectedId = ''
@@ -34,7 +41,7 @@ function useLoadQuestionData() {
       selectedId = componentList[0].fe_id
     }
     dispatch(resetComponents({ componentList, selectedId, copiedComponent: null }))
-    dispatch(resetPageInfo({ title, desc, js, css }))
+    dispatch(resetPageInfo({ title, desc, js, css, isPublished }))
   }, [data])
 
   //根据id变化，执行ajax

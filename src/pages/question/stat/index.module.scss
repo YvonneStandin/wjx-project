@@ -1,0 +1,32 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    background-color: #f0f2f5;
+    height: 100vh;
+    
+    .stat {
+        margin: 15px 20px;
+        display: flex;
+        justify-content: space-between;
+        height: 100%;
+
+        .left {
+            background-color: #fff;
+            width: 300px;
+        }
+
+        .main {
+            background-color: #fff;
+            flex: 1;
+            margin: 0 20px;
+            padding: 12px 18px;
+        }
+
+        .right {
+            background-color: #fff;
+            width: 350px;
+            padding: 12px 18px;
+            overflow: hidden;
+        }
+    }
+}

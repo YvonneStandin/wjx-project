@@ -1,0 +1,19 @@
+.header {
+    height: 30px;
+    background-color: #fff;
+    padding: 12px;
+    border-bottom: 1px solid #e8e8e8;
+    display: flex;
+
+    .left {
+        flex: auto;
+    }
+    .main {
+        flex: auto;
+    }
+    .right {
+        flex: auto;
+        text-align: right;
+    }
+
+}
