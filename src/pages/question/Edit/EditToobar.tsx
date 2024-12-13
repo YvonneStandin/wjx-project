@@ -8,10 +8,11 @@ import {
   BlockOutlined,
   UpOutlined,
   DownOutlined,
-  ReloadOutlined,
+  UndoOutlined,
   RedoOutlined,
 } from '@ant-design/icons'
 import { useDispatch } from 'react-redux'
+import { ActionCreators as UndoActionCreators } from 'redux-undo'
 import {
   deleteComponent,
   changeHidden,
@@ -55,15 +56,22 @@ const EditToobar: FC = () => {
   function handlePaste() {
     dispatch(pasteComponent())
   }
-  // 上移
+  //上移
   function handleSortUp() {
     dispatch(changeComponentSort({ oldIndex: selectedIndex, newIndex: selectedIndex - 1 }))
   }
-  // 下移
+  //下移
   function handleSortDown() {
     dispatch(changeComponentSort({ oldIndex: selectedIndex, newIndex: selectedIndex + 1 }))
   }
-  //TODO 撤销/重做
+  //撤销
+  function handleUndo() {
+    dispatch(UndoActionCreators.undo())
+  }
+  //重做
+  function handleRedo() {
+    dispatch(UndoActionCreators.redo())
+  }
 
   return (
     <Space>
@@ -125,10 +133,10 @@ const EditToobar: FC = () => {
         />
       </Tooltip>
       <Tooltip placement="bottom" title="撤销">
-        <Button shape="circle" icon={<ReloadOutlined />} />
+        <Button shape="circle" icon={<UndoOutlined />} onClick={handleUndo} />
       </Tooltip>
       <Tooltip placement="bottom" title="重做">
-        <Button shape="circle" icon={<RedoOutlined />} />
+        <Button shape="circle" icon={<RedoOutlined />} onClick={handleRedo} />
       </Tooltip>
     </Space>
   )

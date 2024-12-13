@@ -12,6 +12,7 @@
         "Popconfirm",
         "reduxjs",
         "Toobar",
+        "undoable",
         "uparrow"
     ]
 }
