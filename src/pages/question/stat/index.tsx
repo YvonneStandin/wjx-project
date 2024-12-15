@@ -14,13 +14,11 @@ const Stat: FC = () => {
 
   useTitle(`问卷统计 - ${title}`)
 
-  if (loading) {
-    return (
-      <div style={{ textAlign: 'center', marginTop: 60 }}>
-        <Spin size="large" />
-      </div>
-    )
-  }
+  const LoadingElem = (
+    <div style={{ textAlign: 'center', marginTop: 60 }}>
+      <Spin size="large" />
+    </div>
+  )
 
   if (!isPublished) {
     return (
@@ -44,11 +42,14 @@ const Stat: FC = () => {
   return (
     <div className={styles.wrapper}>
       <StatHeader />
-      <div className={styles.stat}>
-        <div className={styles.left}>left</div>
-        <div className={styles.main}>main</div>
-        <div className={styles.right}>right</div>
-      </div>
+      {loading && LoadingElem}
+      {!loading && (
+        <div className={styles.stat}>
+          <div className={styles.left}>left</div>
+          <div className={styles.main}>main</div>
+          <div className={styles.right}>right</div>
+        </div>
+      )}
     </div>
   )
 }

@@ -6,13 +6,14 @@
     display: flex;
 
     .left {
-        flex: auto;
+        flex: 1;
     }
     .main {
-        flex: auto;
+        flex: 1;
+        text-align: center;
     }
     .right {
-        flex: auto;
+        flex: 1;
         text-align: right;
     }
 
