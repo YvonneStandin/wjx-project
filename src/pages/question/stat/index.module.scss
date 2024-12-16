@@ -8,11 +8,12 @@
         margin: 15px 20px;
         display: flex;
         justify-content: space-between;
-        height: 100%;
+        height: calc(100vh - 54px - 30px);
 
         .left {
             background-color: #fff;
             width: 300px;
+            overflow: hidden;
         }
 
         .main {
