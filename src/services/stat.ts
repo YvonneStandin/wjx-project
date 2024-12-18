@@ -9,3 +9,10 @@ export async function getStatListService(
   const data = (await axios.get(url, { params: opt })) as ResDataType
   return data
 }
+
+// 获取图表统计数据
+export async function getChartListService(questionId: string, fe_id: string): Promise<ResDataType> {
+  const url = `/api/stat/${questionId}/${fe_id}`
+  const data = (await axios.get(url)) as ResDataType
+  return data
+}
