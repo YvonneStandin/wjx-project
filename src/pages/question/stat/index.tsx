@@ -7,6 +7,7 @@ import useGetPageInfo from '../../../hooks/useGetPageInfo'
 import StatHeader from './StatHeader'
 import ComponentList from './ComponentList'
 import PageStat from './PageStat'
+import ChartStat from './ChartStat'
 import styles from './index.module.scss'
 
 const Stat: FC = () => {
@@ -64,7 +65,9 @@ const Stat: FC = () => {
               setSelectedType={setSelectedType}
             />
           </div>
-          <div className={styles.right}>right{selectedType}</div>
+          <div className={styles.right}>
+            <ChartStat selectedType={selectedType} selectedId={selectedId} />
+          </div>
         </div>
       )}
     </div>
