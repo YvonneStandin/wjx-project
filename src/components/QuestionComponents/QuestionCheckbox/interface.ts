@@ -21,3 +21,7 @@ export const QuestionCheckboxDefaultProps: QuestionCheckboxPropsType = {
   ],
   isVertical: false,
 }
+
+export type CheckboxStatPropsType = {
+  stat: Array<{ name: string; count: number }>
+}

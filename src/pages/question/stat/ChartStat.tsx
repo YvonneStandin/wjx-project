@@ -12,14 +12,12 @@ type PropsType = {
   selectedId: string
 }
 
-//根据配置生成组件
-//写在FC外侧，不用每次组件更新都创建
 function genChartComponent(type: string, data: StatPropsType) {
   const componentConf = getComponentConfByType(type)
   if (!componentConf) return null
 
   const { StatComponent } = componentConf
-  if (!StatComponent) return null
+  if (!StatComponent) return <div>该组件无统计图表</div>
 
   return <StatComponent {...data} />
 }
