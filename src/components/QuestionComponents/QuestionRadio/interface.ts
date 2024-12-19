@@ -14,3 +14,7 @@ export const QuestionRadioDefaultProps: QuestionRadioPropsType = {
   selectedOption: '',
   isVertical: false,
 }
+
+export type RadioStatPropsType = {
+  stat: Array<{ name: string; count: number }>
+}

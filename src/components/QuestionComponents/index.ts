@@ -4,7 +4,7 @@ import QuestionInputConf, { QuestionInputPropsType } from './QuestionInput'
 import QuestionParagraphConf, { QuestionParagraphPropsType } from './QuestionParagraph'
 import QuestionInfoConf, { QuestionInfoPropsType } from './QuestionInfo'
 import QuestionTextareaConf, { QuestionTextareaPropsType } from './QuestionTextarea'
-import QuestionRadioConf, { QuestionRadioPropsType } from './QuestionRadio'
+import QuestionRadioConf, { QuestionRadioPropsType, RadioStatPropsType } from './QuestionRadio'
 import QuestionCheckboxConf, { QuestionCheckboxPropsType } from './QuestionCheckbox'
 
 //统一，各个组件的prop type，用在redux
@@ -15,6 +15,7 @@ export type ComponentPropsType = QuestionInfoPropsType &
   QuestionTextareaPropsType &
   QuestionRadioPropsType &
   QuestionCheckboxPropsType
+
 //统一，组件配置 type
 export type ComponentConfType = {
   title: string
@@ -22,7 +23,9 @@ export type ComponentConfType = {
   Component: FC<ComponentPropsType>
   PropComponent: FC<ComponentPropsType>
   defaultProps: ComponentPropsType
+  StatComponent?: FC<StatPropsType>
 }
+
 //全部组件配置列表
 const componentConfList: ComponentConfType[] = [
   QuestionInfoConf,
@@ -56,3 +59,6 @@ export const componentConfGroup = [
     components: [QuestionRadioConf, QuestionCheckboxConf],
   },
 ]
+
+// 统一，各个 ChartComponent prop type
+export type StatPropsType = RadioStatPropsType

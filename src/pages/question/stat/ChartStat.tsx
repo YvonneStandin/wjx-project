@@ -3,14 +3,25 @@ import { useParams } from 'react-router-dom'
 import { Typography } from 'antd'
 import { useRequest } from 'ahooks'
 import { getChartListService } from '../../../services/stat'
-import PieDemo from './PieStat'
-import BarStat from './BarStat'
+import { getComponentConfByType, StatPropsType } from '../../../components/QuestionComponents'
 
 const { Title } = Typography
 
 type PropsType = {
   selectedType: string
   selectedId: string
+}
+
+//根据配置生成组件
+//写在FC外侧，不用每次组件更新都创建
+function genChartComponent(type: string, data: StatPropsType) {
+  const componentConf = getComponentConfByType(type)
+  if (!componentConf) return null
+
+  const { StatComponent } = componentConf
+  if (!StatComponent) return null
+
+  return <StatComponent {...data} />
 }
 
 const ChartStat: FC<PropsType> = props => {
@@ -38,10 +49,7 @@ const ChartStat: FC<PropsType> = props => {
     <>
       <Title level={3}>图表统计</Title>
       {!selectedId && <div>未选中组件</div>}
-      <div style={{ height: '50%' }}>
-        {selectedType === 'QuestionRadio' && <PieDemo data={stat} />}
-        {selectedType === 'QuestionCheckbox' && <BarStat />}
-      </div>
+      <div style={{ height: '50%' }}>{genChartComponent(selectedType, { stat })}</div>
     </>
   )
 }
