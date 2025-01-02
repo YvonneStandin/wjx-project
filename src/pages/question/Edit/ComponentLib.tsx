@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useCallback } from 'react'
 import { nanoid } from '@reduxjs/toolkit'
 import { useDispatch } from 'react-redux'
 import { Typography } from 'antd'
@@ -8,32 +8,34 @@ import styles from './ComponentLib.module.scss'
 
 const { Title } = Typography
 
-const ComponentLib: FC = () => {
+function GenComponent(c: ComponentConfType) {
+  const { title, type, Component, defaultProps } = c
   const dispatch = useDispatch()
 
-  function genComponent(c: ComponentConfType) {
-    const { title, type, Component, defaultProps } = c
-
-    function handleClick() {
-      dispatch(
-        addComponent({
-          fe_id: nanoid(), //前端生成的 id，mongodb不认这种格式，所以自定义fe_id
-          type,
-          title,
-          props: defaultProps,
-        })
-      )
-    }
-
-    return (
-      <div key={type} className={styles.wrapper} onClick={handleClick}>
-        <div className={styles.component}>
-          <Component />
-        </div>
-      </div>
+  // 新增组件
+  function handleAddComponent() {
+    dispatch(
+      addComponent({
+        fe_id: nanoid(), //前端生成的 id，mongodb不认这种格式，所以自定义fe_id
+        type,
+        title,
+        props: defaultProps,
+      })
     )
   }
+  // 不依赖任何数据，缓存的住
+  const handleClick = useCallback(handleAddComponent, [])
 
+  return (
+    <div key={type} className={styles.wrapper} onClick={handleClick}>
+      <div className={styles.component}>
+        <Component />
+      </div>
+    </div>
+  )
+}
+
+const ComponentLib: FC = () => {
   return (
     <div className={styles.componentLib}>
       {componentConfGroup.map((group, index) => {
@@ -44,7 +46,7 @@ const ComponentLib: FC = () => {
             <Title level={3} style={{ fontSize: '16px', marginTop: index > 0 ? '20px' : '0' }}>
               {groupName}
             </Title>
-            {components.map(c => genComponent(c))}
+            {components.map(c => GenComponent(c))}
           </div>
         )
       })}
