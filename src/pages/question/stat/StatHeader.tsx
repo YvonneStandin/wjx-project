@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react'
+import React, { FC, useMemo, useRef } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
 import { Space, Button, Typography, Input, Tooltip, message } from 'antd'
 import { CopyOutlined, QrcodeOutlined, LeftOutlined } from '@ant-design/icons'
@@ -50,6 +50,10 @@ const StatHeader: FC = () => {
     )
   }
 
+  // 使用 useMemo 1.依赖项是否经常变化 2.缓存的元素是否创建成本较高
+  // 此处使用 1. id 和 isPublished 不经常变化 2.借用第三方 qrcode 未知成本
+  const LinkAndQRcodeElem = useMemo(genLinkAndQRcodeElem, [id, isPublished])
+
   return (
     <div className={styles.header}>
       <div className={styles.left}>
@@ -62,7 +66,7 @@ const StatHeader: FC = () => {
           </Title>
         </Space>
       </div>
-      <div className={styles.main}>{genLinkAndQRcodeElem()}</div>
+      <div className={styles.main}>{LinkAndQRcodeElem}</div>
       <div className={styles.right}>
         <Button type="primary" onClick={() => nav(`${EDIT_PATHNAME}/${id}`)}>
           编辑问卷
