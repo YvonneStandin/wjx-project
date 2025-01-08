@@ -2,7 +2,9 @@ import axios from 'axios'
 import { getToken } from '../utils/userToken'
 import { message } from 'antd'
 
+// 创建 axios 实例
 const instance = axios.create({
+  baseURL: 'http://localhost:3005/',
   timeout: 10 * 1000,
 })
 

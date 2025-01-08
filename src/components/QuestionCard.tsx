@@ -61,7 +61,7 @@ const QuestionCard: FC<PropsType> = props => {
       manual: true,
       onSuccess(res) {
         message.success('复制成功')
-        nav(`${EDIT_PATHNAME}/${res.id}`)
+        nav(`${EDIT_PATHNAME}/${res.id || res._id}`)
       },
     }
   )
@@ -78,12 +78,6 @@ const QuestionCard: FC<PropsType> = props => {
     }
   )
 
-  // classnames结合条件判断，要有中括号[styles.published]，因为{a:100}属性就是"a"，{[a]:100}属性是a变量名的实际值
-  // const itemClassNames = classNames(styles['list-item'], { [styles.published]: isPublished })
-  // const itemClassNames = classNames({
-  //   [styles['list-item']]: true,
-  //   [styles.published]: isPublished,
-  // })
   if (isDeletedState) return null
   return (
     <div key={_id} className={styles.container}>
